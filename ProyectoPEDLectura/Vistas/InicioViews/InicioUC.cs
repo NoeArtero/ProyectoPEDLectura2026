@@ -6,13 +6,15 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace ProyectoPEDLectura
+namespace ProyectoPEDLectura.Vistas.Inicio
 {
-    public partial class EJEMPLO : Form
+    public partial class InicioUC : UserControl
     {
-        public EJEMPLO()
+        public InicioUC()
         {
             InitializeComponent();
         }
+
+       
     }
 }
