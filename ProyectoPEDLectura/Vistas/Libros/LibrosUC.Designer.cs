@@ -98,14 +98,13 @@
             panelHeader.Dock = DockStyle.Top;
             panelHeader.FillColor = Color.FromArgb(150, 51, 3);
             panelHeader.Location = new Point(0, 0);
-            panelHeader.Margin = new Padding(3, 4, 3, 4);
             panelHeader.Name = "panelHeader";
-            panelHeader.Padding = new Padding(18, 16, 18, 16);
+            panelHeader.Padding = new Padding(16, 12, 16, 12);
             panelHeader.ShadowDecoration.BorderRadius = 5;
             panelHeader.ShadowDecoration.Color = Color.FromArgb(29, 27, 52);
             panelHeader.ShadowDecoration.CustomizableEdges = customizableEdges21;
             panelHeader.ShadowDecoration.Depth = 5;
-            panelHeader.Size = new Size(1451, 93);
+            panelHeader.Size = new Size(1270, 70);
             panelHeader.TabIndex = 1;
             // 
             // panelBotones
@@ -117,10 +116,11 @@
             panelBotones.Controls.Add(cmbCategoriaProducto);
             panelBotones.CustomizableEdges = customizableEdges13;
             panelBotones.Dock = DockStyle.Left;
-            panelBotones.Location = new Point(191, 16);
+            panelBotones.Location = new Point(167, 12);
+            panelBotones.Margin = new Padding(3, 2, 3, 2);
             panelBotones.Name = "panelBotones";
             panelBotones.ShadowDecoration.CustomizableEdges = customizableEdges14;
-            panelBotones.Size = new Size(927, 61);
+            panelBotones.Size = new Size(811, 46);
             panelBotones.TabIndex = 10;
             // 
             // lblBuscar
@@ -128,10 +128,9 @@
             lblBuscar.BackColor = Color.Transparent;
             lblBuscar.Font = new Font("Bahnschrift SemiCondensed", 15F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblBuscar.ForeColor = Color.Gainsboro;
-            lblBuscar.Location = new Point(6, 14);
-            lblBuscar.Margin = new Padding(3, 4, 3, 4);
+            lblBuscar.Location = new Point(5, 10);
             lblBuscar.Name = "lblBuscar";
-            lblBuscar.Size = new Size(76, 32);
+            lblBuscar.Size = new Size(61, 26);
             lblBuscar.TabIndex = 3;
             lblBuscar.Text = "Buscar: ";
             lblBuscar.TextAlignment = ContentAlignment.MiddleCenter;
@@ -148,13 +147,13 @@
             txtBuscarProd.Font = new Font("Bahnschrift", 10F);
             txtBuscarProd.ForeColor = Color.DimGray;
             txtBuscarProd.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtBuscarProd.Location = new Point(81, 14);
-            txtBuscarProd.Margin = new Padding(6, 7, 6, 7);
+            txtBuscarProd.Location = new Point(71, 10);
+            txtBuscarProd.Margin = new Padding(5);
             txtBuscarProd.Name = "txtBuscarProd";
             txtBuscarProd.PlaceholderText = "Nombre o código";
             txtBuscarProd.SelectedText = "";
             txtBuscarProd.ShadowDecoration.CustomizableEdges = customizableEdges10;
-            txtBuscarProd.Size = new Size(182, 29);
+            txtBuscarProd.Size = new Size(159, 22);
             txtBuscarProd.TabIndex = 4;
             // 
             // guna2HtmlLabel2
@@ -162,10 +161,9 @@
             guna2HtmlLabel2.BackColor = Color.Transparent;
             guna2HtmlLabel2.Font = new Font("Bahnschrift SemiCondensed", 15F, FontStyle.Regular, GraphicsUnit.Point, 0);
             guna2HtmlLabel2.ForeColor = Color.Gainsboro;
-            guna2HtmlLabel2.Location = new Point(272, 14);
-            guna2HtmlLabel2.Margin = new Padding(3, 4, 3, 4);
+            guna2HtmlLabel2.Location = new Point(238, 10);
             guna2HtmlLabel2.Name = "guna2HtmlLabel2";
-            guna2HtmlLabel2.Size = new Size(103, 32);
+            guna2HtmlLabel2.Size = new Size(79, 26);
             guna2HtmlLabel2.TabIndex = 5;
             guna2HtmlLabel2.Text = "Categoría:";
             guna2HtmlLabel2.TextAlignment = ContentAlignment.MiddleCenter;
@@ -182,11 +180,10 @@
             cmbCategoriaProducto.ForeColor = Color.DimGray;
             cmbCategoriaProducto.ItemHeight = 30;
             cmbCategoriaProducto.ItemsAppearance.SelectedBackColor = Color.FromArgb(224, 224, 224);
-            cmbCategoriaProducto.Location = new Point(381, 14);
-            cmbCategoriaProducto.Margin = new Padding(3, 4, 3, 4);
+            cmbCategoriaProducto.Location = new Point(333, 10);
             cmbCategoriaProducto.Name = "cmbCategoriaProducto";
             cmbCategoriaProducto.ShadowDecoration.CustomizableEdges = customizableEdges12;
-            cmbCategoriaProducto.Size = new Size(209, 36);
+            cmbCategoriaProducto.Size = new Size(183, 36);
             cmbCategoriaProducto.TabIndex = 6;
             // 
             // panelTitulo
@@ -196,10 +193,11 @@
             panelTitulo.Controls.Add(guna2Shapes1);
             panelTitulo.CustomizableEdges = customizableEdges16;
             panelTitulo.Dock = DockStyle.Left;
-            panelTitulo.Location = new Point(18, 16);
+            panelTitulo.Location = new Point(16, 12);
+            panelTitulo.Margin = new Padding(3, 2, 3, 2);
             panelTitulo.Name = "panelTitulo";
             panelTitulo.ShadowDecoration.CustomizableEdges = customizableEdges17;
-            panelTitulo.Size = new Size(173, 61);
+            panelTitulo.Size = new Size(151, 46);
             panelTitulo.TabIndex = 9;
             // 
             // lblTitulo
@@ -207,10 +205,9 @@
             lblTitulo.BackColor = Color.Transparent;
             lblTitulo.Font = new Font("Bahnschrift SemiCondensed", 20.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblTitulo.ForeColor = Color.Gainsboro;
-            lblTitulo.Location = new Point(3, 5);
-            lblTitulo.Margin = new Padding(3, 4, 3, 4);
+            lblTitulo.Location = new Point(3, 4);
             lblTitulo.Name = "lblTitulo";
-            lblTitulo.Size = new Size(86, 43);
+            lblTitulo.Size = new Size(68, 35);
             lblTitulo.TabIndex = 0;
             lblTitulo.Text = "Libros";
             lblTitulo.TextAlignment = ContentAlignment.MiddleCenter;
@@ -220,14 +217,13 @@
             guna2Shapes1.BackColor = Color.Transparent;
             guna2Shapes1.BorderColor = Color.White;
             guna2Shapes1.FillColor = Color.White;
-            guna2Shapes1.Location = new Point(146, -12);
-            guna2Shapes1.Margin = new Padding(3, 4, 3, 4);
+            guna2Shapes1.Location = new Point(128, -9);
             guna2Shapes1.Name = "guna2Shapes1";
             guna2Shapes1.PolygonSides = 2;
             guna2Shapes1.PolygonSkip = 1;
             guna2Shapes1.Rotate = 0F;
             guna2Shapes1.RoundedEdges = customizableEdges15;
-            guna2Shapes1.Size = new Size(22, 93);
+            guna2Shapes1.Size = new Size(19, 70);
             guna2Shapes1.TabIndex = 2;
             guna2Shapes1.UseTransparentBackground = true;
             guna2Shapes1.Zoom = 80;
@@ -238,12 +234,11 @@
             PanelArticulos.Controls.Add(lblTotalLibros);
             PanelArticulos.CustomizableEdges = customizableEdges18;
             PanelArticulos.Dock = DockStyle.Right;
-            PanelArticulos.Location = new Point(1208, 16);
-            PanelArticulos.Margin = new Padding(3, 4, 3, 4);
+            PanelArticulos.Location = new Point(1057, 12);
             PanelArticulos.Name = "PanelArticulos";
-            PanelArticulos.Padding = new Padding(0, 11, 9, 11);
+            PanelArticulos.Padding = new Padding(0, 8, 8, 8);
             PanelArticulos.ShadowDecoration.CustomizableEdges = customizableEdges19;
-            PanelArticulos.Size = new Size(225, 61);
+            PanelArticulos.Size = new Size(197, 46);
             PanelArticulos.TabIndex = 1;
             PanelArticulos.UseTransparentBackground = true;
             // 
@@ -253,10 +248,9 @@
             lblTotalLibros.Dock = DockStyle.Right;
             lblTotalLibros.Font = new Font("Bahnschrift SemiCondensed", 15F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblTotalLibros.ForeColor = Color.Gainsboro;
-            lblTotalLibros.Location = new Point(93, 11);
-            lblTotalLibros.Margin = new Padding(3, 4, 3, 4);
+            lblTotalLibros.Location = new Point(95, 8);
             lblTotalLibros.Name = "lblTotalLibros";
-            lblTotalLibros.Size = new Size(123, 32);
+            lblTotalLibros.Size = new Size(94, 26);
             lblTotalLibros.TabIndex = 3;
             lblTotalLibros.Text = "N° de libros:";
             lblTotalLibros.TextAlignment = ContentAlignment.MiddleRight;
@@ -268,7 +262,7 @@
             lblHora.ForeColor = Color.Gainsboro;
             lblHora.Location = new Point(307, 14);
             lblHora.Name = "lblHora";
-            lblHora.Size = new Size(93, 38);
+            lblHora.Size = new Size(73, 31);
             lblHora.TabIndex = 1;
             lblHora.Text = "--:--:--";
             lblHora.TextAlignment = ContentAlignment.MiddleRight;
@@ -280,7 +274,7 @@
             lblFecha.ForeColor = Color.Gainsboro;
             lblFecha.Location = new Point(3, 14);
             lblFecha.Name = "lblFecha";
-            lblFecha.Size = new Size(101, 38);
+            lblFecha.Size = new Size(79, 31);
             lblFecha.TabIndex = 2;
             lblFecha.Text = "--/--/--";
             lblFecha.TextAlignment = ContentAlignment.MiddleRight;
@@ -291,11 +285,10 @@
             PanelBotonesAccion.Controls.Add(btnAgregarLibro);
             PanelBotonesAccion.CustomizableEdges = customizableEdges7;
             PanelBotonesAccion.Dock = DockStyle.Top;
-            PanelBotonesAccion.Location = new Point(0, 93);
-            PanelBotonesAccion.Margin = new Padding(3, 4, 3, 4);
+            PanelBotonesAccion.Location = new Point(0, 70);
             PanelBotonesAccion.Name = "PanelBotonesAccion";
             PanelBotonesAccion.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            PanelBotonesAccion.Size = new Size(1451, 97);
+            PanelBotonesAccion.Size = new Size(1270, 73);
             PanelBotonesAccion.TabIndex = 2;
             // 
             // btnEliminarLibro
@@ -313,14 +306,14 @@
             btnEliminarLibro.Image = Properties.Resources.Eliminar;
             btnEliminarLibro.ImageOffset = new Point(16, -10);
             btnEliminarLibro.ImageSize = new Size(55, 55);
-            btnEliminarLibro.Location = new Point(801, 4);
-            btnEliminarLibro.Margin = new Padding(3, 4, 3, 4);
+            btnEliminarLibro.Location = new Point(701, 3);
             btnEliminarLibro.Name = "btnEliminarLibro";
             btnEliminarLibro.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            btnEliminarLibro.Size = new Size(101, 85);
+            btnEliminarLibro.Size = new Size(88, 64);
             btnEliminarLibro.TabIndex = 2;
             btnEliminarLibro.Text = "Eliminar";
             btnEliminarLibro.TextOffset = new Point(-15, 23);
+            btnEliminarLibro.Click += btnEliminarLibro_Click;
             // 
             // btnAgregarLibro
             // 
@@ -337,12 +330,11 @@
             btnAgregarLibro.Image = Properties.Resources.AgregarBlanco;
             btnAgregarLibro.ImageOffset = new Point(16, -10);
             btnAgregarLibro.ImageSize = new Size(55, 55);
-            btnAgregarLibro.Location = new Point(680, 4);
-            btnAgregarLibro.Margin = new Padding(3, 4, 3, 4);
+            btnAgregarLibro.Location = new Point(595, 3);
             btnAgregarLibro.Name = "btnAgregarLibro";
             btnAgregarLibro.PressedColor = Color.Gainsboro;
             btnAgregarLibro.ShadowDecoration.CustomizableEdges = customizableEdges6;
-            btnAgregarLibro.Size = new Size(101, 85);
+            btnAgregarLibro.Size = new Size(88, 64);
             btnAgregarLibro.TabIndex = 0;
             btnAgregarLibro.Text = "Agregar";
             btnAgregarLibro.TextOffset = new Point(-15, 23);
@@ -354,12 +346,11 @@
             PanelDGVProd.Controls.Add(dgvLibros);
             PanelDGVProd.CustomizableEdges = customizableEdges1;
             PanelDGVProd.Dock = DockStyle.Fill;
-            PanelDGVProd.Location = new Point(0, 190);
-            PanelDGVProd.Margin = new Padding(3, 4, 3, 4);
+            PanelDGVProd.Location = new Point(0, 143);
             PanelDGVProd.Name = "PanelDGVProd";
-            PanelDGVProd.Padding = new Padding(7, 8, 7, 8);
+            PanelDGVProd.Padding = new Padding(6);
             PanelDGVProd.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            PanelDGVProd.Size = new Size(1451, 695);
+            PanelDGVProd.Size = new Size(1270, 521);
             PanelDGVProd.TabIndex = 3;
             // 
             // dgvLibros
@@ -390,16 +381,14 @@
             dgvLibros.DefaultCellStyle = dataGridViewCellStyle3;
             dgvLibros.Dock = DockStyle.Fill;
             dgvLibros.GridColor = Color.FromArgb(231, 229, 255);
-            dgvLibros.Location = new Point(7, 8);
-            dgvLibros.Margin = new Padding(3, 4, 3, 4);
+            dgvLibros.Location = new Point(6, 6);
             dgvLibros.Name = "dgvLibros";
             dgvLibros.ReadOnly = true;
             dgvLibros.RowHeadersVisible = false;
             dgvLibros.RowHeadersWidth = 51;
             dataGridViewCellStyle4.Font = new Font("Bahnschrift Condensed", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dgvLibros.RowsDefaultCellStyle = dataGridViewCellStyle4;
-            dgvLibros.RowTemplate.Height = 25;
-            dgvLibros.Size = new Size(1437, 679);
+            dgvLibros.Size = new Size(1258, 509);
             dgvLibros.TabIndex = 0;
             dgvLibros.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             dgvLibros.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -490,15 +479,14 @@
             // 
             // LibrosUC
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             Controls.Add(PanelDGVProd);
             Controls.Add(PanelBotonesAccion);
             Controls.Add(panelHeader);
-            Margin = new Padding(3, 4, 3, 4);
             Name = "LibrosUC";
-            Size = new Size(1451, 885);
+            Size = new Size(1270, 664);
             ((System.ComponentModel.ISupportInitialize)errorProductos).EndInit();
             panelHeader.ResumeLayout(false);
             panelBotones.ResumeLayout(false);
