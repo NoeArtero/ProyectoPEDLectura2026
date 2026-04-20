@@ -14,5 +14,7 @@ namespace ProyectoPEDLectura.extras.LibrosAgregados.ClaseAgregarLibros
         public string? Categoria { get; set; }
         public int NumeroPaginas { get; set; }   //NUEVO
         public Image? VistaPrevia { get; set; }
+
+        
     }
 }
