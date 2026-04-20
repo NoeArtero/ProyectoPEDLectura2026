@@ -88,6 +88,7 @@ namespace ProyectoPEDLectura.Vistas.Libros
             ContarLibros();
         }
 
+
         public void ActualizarLibros()
         {
             GestorLibros.CargarDesdeArchivo();

@@ -291,6 +291,7 @@ namespace ProyectoPEDLectura.Vistas.Libros
             }
         }
 
+
         // Permite escribir únicamente números en txtPaginas
         private void txtPaginas_KeyPress(object sender, KeyPressEventArgs e)
         {
