@@ -1,8 +1,9 @@
 ﻿using ProyectoPEDLectura.extras;
-using ProyectoPEDLectura.extras.LibrosAgregados.ClaseAgregarLibros; // NUEVO: para usar ArchivoAdjunto y la pila compartida
+using ProyectoPEDLectura.extras.LibrosAgregados.ClaseAgregarLibros;
 using System;
-using System.Collections.Generic; // NUEVO: para usar List<ArchivoAdjunto>
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace ProyectoPEDLectura.Vistas.Libros
@@ -13,31 +14,25 @@ namespace ProyectoPEDLectura.Vistas.Libros
         {
             InitializeComponent();
 
-            // Cuando la vista se vuelve visible, recarga los libros
             this.VisibleChanged += LibrosUC_VisibleChanged;
-
-            // Eventos para filtrar automáticamente
             txtBuscarProd.TextChanged += txtBuscarProd_TextChanged;
             cmbCategoriaProducto.SelectedIndexChanged += cmbCategoriaProducto_SelectedIndexChanged;
 
-            // Carga categorías en el combo
             CargarCategoriasFiltro();
 
-            // Carga la tabla
-            CargarLibrosEnTabla();
+            // Cargar desde el TXT al abrir la vista
+            GestorLibros.CargarDesdeArchivo();
 
-            // Cuenta los libros
+            CargarLibrosEnTabla();
             ContarLibros();
         }
 
-        // método para poder contar los libros existentes en el dgv y mostrarlo en el lblTotalLibros
         private void ContarLibros()
         {
             int totalLibros = dgvLibros.Rows.Count;
             lblTotalLibros.Text = $"N° de libros: {totalLibros}";
         }
 
-        // Carga las categorías en el ComboBox del filtro
         private void CargarCategoriasFiltro()
         {
             cmbCategoriaProducto.Items.Clear();
@@ -51,17 +46,15 @@ namespace ProyectoPEDLectura.Vistas.Libros
             cmbCategoriaProducto.SelectedIndex = 0;
         }
 
-        // Carga todos los libros o los libros filtrados
         private void CargarLibrosEnTabla()
         {
             dgvLibros.Rows.Clear();
 
-            List<ArchivoAdjunto> libros = GestorLibros.HistorialLibros.ObtenerLibros();
+            List<ArchivoAdjunto> libros = GestorLibros.ObtenerLibros();
 
             string textoBuscar = txtBuscarProd.Text.Trim().ToLower();
             string categoriaSeleccionada = cmbCategoriaProducto.Text.Trim();
 
-            // Filtra por búsqueda
             if (!string.IsNullOrWhiteSpace(textoBuscar))
             {
                 libros = libros.Where(libro =>
@@ -70,7 +63,6 @@ namespace ProyectoPEDLectura.Vistas.Libros
                 ).ToList();
             }
 
-            // Filtra por categoría
             if (!string.IsNullOrWhiteSpace(categoriaSeleccionada) && categoriaSeleccionada != "Todas")
             {
                 libros = libros.Where(libro =>
@@ -83,24 +75,25 @@ namespace ProyectoPEDLectura.Vistas.Libros
             {
                 int fila = dgvLibros.Rows.Add();
 
-                dgvLibros.Rows[fila].Cells[0].Value = libro.VistaPrevia;                    // Fotografía
-                dgvLibros.Rows[fila].Cells[1].Value = libro.Codigo;                         // Código
-                dgvLibros.Rows[fila].Cells[2].Value = libro.NombreArchivo;                  // Nombre
-                dgvLibros.Rows[fila].Cells[3].Value = libro.Categoria;                      // Categoría
-                dgvLibros.Rows[fila].Cells[4].Value = libro.NumeroPaginas;                  // N° Páginas
-                dgvLibros.Rows[fila].Cells[5].Value = DateTime.Now.ToShortDateString();     // Fecha de agregado
-                dgvLibros.Rows[fila].Cells[6].Value = "";                                   // Anotaciones
-                dgvLibros.Rows[fila].Cells[7].Value = "";                                   // Progreso
+                dgvLibros.Rows[fila].Cells[0].Value = libro.VistaPrevia;
+                dgvLibros.Rows[fila].Cells[1].Value = libro.Codigo;
+                dgvLibros.Rows[fila].Cells[2].Value = libro.NombreArchivo;
+                dgvLibros.Rows[fila].Cells[3].Value = libro.Categoria;
+                dgvLibros.Rows[fila].Cells[4].Value = libro.NumeroPaginas;
+                dgvLibros.Rows[fila].Cells[5].Value = libro.FechaAgregado.ToShortDateString();
+                dgvLibros.Rows[fila].Cells[6].Value = "";
+                dgvLibros.Rows[fila].Cells[7].Value = "";
             }
 
             ContarLibros();
         }
 
-        // Método público para actualizar la vista de libros
         public void ActualizarLibros()
         {
+            GestorLibros.CargarDesdeArchivo();
             CargarLibrosEnTabla();
         }
+
         private void btnAgregarLibro_Click(object sender, EventArgs e)
         {
             AgregarLibroUC agregarLibroUCv = new AgregarLibroUC();
@@ -111,28 +104,25 @@ namespace ProyectoPEDLectura.Vistas.Libros
                                                  (this.Height - agregarLibroUCv.Height) / 2);
         }
 
-        // Cuando vuelves a la vista, refresca la tabla
-        private void LibrosUC_VisibleChanged(object sender, EventArgs e)
+        private void LibrosUC_VisibleChanged(object? sender, EventArgs e)
         {
             if (this.Visible)
             {
+                GestorLibros.CargarDesdeArchivo();
                 CargarLibrosEnTabla();
             }
         }
 
-        // Busca automáticamente al escribir
-        private void txtBuscarProd_TextChanged(object sender, EventArgs e)
+        private void txtBuscarProd_TextChanged(object? sender, EventArgs e)
         {
             CargarLibrosEnTabla();
         }
 
-        // Filtra automáticamente al cambiar categoría
-        private void cmbCategoriaProducto_SelectedIndexChanged(object sender, EventArgs e)
+        private void cmbCategoriaProducto_SelectedIndexChanged(object? sender, EventArgs e)
         {
             CargarLibrosEnTabla();
         }
 
-        // Elimina el libro seleccionado
         private void btnEliminarLibro_Click(object sender, EventArgs e)
         {
             if (dgvLibros.CurrentRow == null)
@@ -141,7 +131,7 @@ namespace ProyectoPEDLectura.Vistas.Libros
                 return;
             }
 
-            string codigo = Convert.ToString(dgvLibros.CurrentRow.Cells[1].Value);
+            string? codigo = Convert.ToString(dgvLibros.CurrentRow.Cells[1].Value);
 
             if (string.IsNullOrWhiteSpace(codigo))
             {
@@ -151,16 +141,17 @@ namespace ProyectoPEDLectura.Vistas.Libros
 
             if (Mensaje.MostrarConfirmacion("¿Está seguro de que desea eliminar este libro?", "Confirmación") == DialogResult.Yes)
             {
-                bool eliminado = GestorLibros.HistorialLibros.EliminarPorCodigo(codigo);
+                bool eliminado = GestorLibros.EliminarLibro(codigo);
 
                 if (eliminado)
                 {
                     Mensaje.MostrarMensaje("Libro eliminado exitosamente.", "Éxito");
+                    GestorLibros.CargarDesdeArchivo();
                     CargarLibrosEnTabla();
                 }
                 else
                 {
-                    Mensaje.MostrarError("No se encontró el libro en la pila.", "Error");
+                    Mensaje.MostrarError("No se encontró el libro.", "Error");
                 }
             }
         }

@@ -12,9 +12,10 @@ namespace ProyectoPEDLectura.extras.LibrosAgregados.ClaseAgregarLibros
         public string? RutaArchivo { get; set; }
         public string? Extension { get; set; }
         public string? Categoria { get; set; }
-        public int NumeroPaginas { get; set; }   //NUEVO
+        public int NumeroPaginas { get; set; }
         public Image? VistaPrevia { get; set; }
 
-        
+        // NUEVO
+        public DateTime FechaAgregado { get; set; }
     }
 }

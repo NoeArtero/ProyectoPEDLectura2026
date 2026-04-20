@@ -272,15 +272,13 @@ namespace ProyectoPEDLectura.Vistas.Libros
                     RutaArchivo = rutaArchivoSeleccionado,
                     Extension = Path.GetExtension(rutaArchivoSeleccionado),
                     Categoria = cmbAgregarProductoCategoria.Text,
-
-                    // Guarda el número de páginas, ya sea automático o manual
                     NumeroPaginas = numeroPaginas,
-
-                    VistaPrevia = imgAgregarProd.Image
+                    VistaPrevia = imgAgregarProd.Image,
+                    FechaAgregado = DateTime.Now
                 };
 
                 // Agrega el libro a la pila
-                GestorLibros.HistorialLibros.ApilarLibro(nuevoLibro);
+                GestorLibros.AgregarLibro(nuevoLibro);
 
                 // Si el control padre es LibrosUC, actualiza la tabla de inmediato
                 if (this.Parent is LibrosUC vistaLibros)
