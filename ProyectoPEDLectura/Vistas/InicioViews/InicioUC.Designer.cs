@@ -109,11 +109,6 @@
             panelBody = new Guna.UI2.WinForms.Guna2Panel();
             tableLayoutPanel1 = new TableLayoutPanel();
             dgvResumen = new Guna.UI2.WinForms.Guna2DataGridView();
-            IdOrden = new DataGridViewTextBoxColumn();
-            EstadoPago = new DataGridViewTextBoxColumn();
-            Monto = new DataGridViewTextBoxColumn();
-            FechaPedido = new DataGridViewTextBoxColumn();
-            FechaEntrega = new DataGridViewTextBoxColumn();
             guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
             guna2Button1 = new Guna.UI2.WinForms.Guna2Button();
             ChartGrid = new TableLayoutPanel();
@@ -132,6 +127,11 @@
             guna2HtmlLabel1 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             CardInventario = new Guna.UI2.WinForms.Guna2GradientPanel();
             guna2HtmlLabel2 = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            CodigoLibro = new DataGridViewTextBoxColumn();
+            NombreLibro = new DataGridViewTextBoxColumn();
+            AnotacionesLibro = new DataGridViewTextBoxColumn();
+            FechaAgregado = new DataGridViewTextBoxColumn();
+            ProgresoLibro = new DataGridViewTextBoxColumn();
             panelHeader.SuspendLayout();
             PanelClock.SuspendLayout();
             panelBody.SuspendLayout();
@@ -273,7 +273,7 @@
             dgvResumen.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgvResumen.ColumnHeadersHeight = 32;
             dgvResumen.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
-            dgvResumen.Columns.AddRange(new DataGridViewColumn[] { IdOrden, EstadoPago, Monto, FechaPedido, FechaEntrega });
+            dgvResumen.Columns.AddRange(new DataGridViewColumn[] { CodigoLibro, NombreLibro, AnotacionesLibro, FechaAgregado, ProgresoLibro });
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = Color.White;
             dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F);
@@ -314,41 +314,6 @@
             dgvResumen.ThemeStyle.RowsStyle.Height = 25;
             dgvResumen.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(231, 229, 255);
             dgvResumen.ThemeStyle.RowsStyle.SelectionForeColor = Color.FromArgb(71, 69, 94);
-            // 
-            // IdOrden
-            // 
-            IdOrden.HeaderText = "Orden";
-            IdOrden.MinimumWidth = 6;
-            IdOrden.Name = "IdOrden";
-            IdOrden.ReadOnly = true;
-            // 
-            // EstadoPago
-            // 
-            EstadoPago.HeaderText = "Estado";
-            EstadoPago.MinimumWidth = 6;
-            EstadoPago.Name = "EstadoPago";
-            EstadoPago.ReadOnly = true;
-            // 
-            // Monto
-            // 
-            Monto.HeaderText = "Monto";
-            Monto.MinimumWidth = 6;
-            Monto.Name = "Monto";
-            Monto.ReadOnly = true;
-            // 
-            // FechaPedido
-            // 
-            FechaPedido.HeaderText = "Fecha de Pedido";
-            FechaPedido.MinimumWidth = 6;
-            FechaPedido.Name = "FechaPedido";
-            FechaPedido.ReadOnly = true;
-            // 
-            // FechaEntrega
-            // 
-            FechaEntrega.HeaderText = "Fecha de entrega";
-            FechaEntrega.MinimumWidth = 6;
-            FechaEntrega.Name = "FechaEntrega";
-            FechaEntrega.ReadOnly = true;
             // 
             // guna2Panel1
             // 
@@ -427,9 +392,9 @@
             guna2HtmlLabel4.Location = new Point(55, 13);
             guna2HtmlLabel4.Margin = new Padding(3, 4, 3, 4);
             guna2HtmlLabel4.Name = "guna2HtmlLabel4";
-            guna2HtmlLabel4.Size = new Size(248, 43);
+            guna2HtmlLabel4.Size = new Size(228, 43);
             guna2HtmlLabel4.TabIndex = 1;
-            guna2HtmlLabel4.Text = "Ultimos pedidos";
+            guna2HtmlLabel4.Text = "Ultimos Libros";
             guna2HtmlLabel4.TextAlignment = ContentAlignment.MiddleCenter;
             // 
             // guna2GradientPanel1
@@ -715,6 +680,41 @@
             guna2HtmlLabel2.Text = "Tiempo leído";
             guna2HtmlLabel2.TextAlignment = ContentAlignment.MiddleCenter;
             // 
+            // CodigoLibro
+            // 
+            CodigoLibro.HeaderText = "Código";
+            CodigoLibro.MinimumWidth = 6;
+            CodigoLibro.Name = "CodigoLibro";
+            CodigoLibro.ReadOnly = true;
+            // 
+            // NombreLibro
+            // 
+            NombreLibro.HeaderText = "Nombre";
+            NombreLibro.MinimumWidth = 6;
+            NombreLibro.Name = "NombreLibro";
+            NombreLibro.ReadOnly = true;
+            // 
+            // AnotacionesLibro
+            // 
+            AnotacionesLibro.HeaderText = "Anotaciones";
+            AnotacionesLibro.MinimumWidth = 6;
+            AnotacionesLibro.Name = "AnotacionesLibro";
+            AnotacionesLibro.ReadOnly = true;
+            // 
+            // FechaAgregado
+            // 
+            FechaAgregado.HeaderText = "Fecha de Agregado";
+            FechaAgregado.MinimumWidth = 6;
+            FechaAgregado.Name = "FechaAgregado";
+            FechaAgregado.ReadOnly = true;
+            // 
+            // ProgresoLibro
+            // 
+            ProgresoLibro.HeaderText = "Progreso";
+            ProgresoLibro.MinimumWidth = 6;
+            ProgresoLibro.Name = "ProgresoLibro";
+            ProgresoLibro.ReadOnly = true;
+            // 
             // InicioUC
             // 
             AutoScaleDimensions = new SizeF(120F, 120F);
@@ -777,10 +777,10 @@
         private Guna.UI2.WinForms.Guna2Panel PanelClock;
         private Guna.UI2.WinForms.Guna2HtmlLabel lblFecha;
         private Guna.UI2.WinForms.Guna2HtmlLabel lblHora;
-        private DataGridViewTextBoxColumn IdOrden;
-        private DataGridViewTextBoxColumn EstadoPago;
-        private DataGridViewTextBoxColumn Monto;
-        private DataGridViewTextBoxColumn FechaPedido;
-        private DataGridViewTextBoxColumn FechaEntrega;
+        private DataGridViewTextBoxColumn CodigoLibro;
+        private DataGridViewTextBoxColumn NombreLibro;
+        private DataGridViewTextBoxColumn AnotacionesLibro;
+        private DataGridViewTextBoxColumn FechaAgregado;
+        private DataGridViewTextBoxColumn ProgresoLibro;
     }
 }
