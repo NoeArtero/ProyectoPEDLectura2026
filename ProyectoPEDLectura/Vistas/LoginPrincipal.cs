@@ -1,12 +1,13 @@
 ﻿
 
 using ProyectoPEDLectura.Vistas.Inicio;
+using ProyectoPEDLectura.Vistas.Login;
 
 namespace ProyectoPEDLectura.Vistas
 {
-    public partial class Login : Form
+    public partial class LoginPrincipal : Form
     {
-        public Login()
+        public LoginPrincipal()
         {
             InitializeComponent();
             
@@ -98,7 +99,14 @@ namespace ProyectoPEDLectura.Vistas
 
         private void btnNuevoUsuario_Click(object sender, EventArgs e)
         {
+            AgregarNuevoUsuarioUC agregarNuevoUsuarioUC = new AgregarNuevoUsuarioUC();
+            this.Controls.Add(agregarNuevoUsuarioUC);
 
+            // Centrar el UserControl en el formulario
+            CentrarControl(agregarNuevoUsuarioUC, this);
+
+
+            agregarNuevoUsuarioUC.BringToFront();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace ProyectoPEDLectura.Vistas
 {
-    partial class Login
+    partial class LoginPrincipal
     {
         /// <summary>
         /// Required designer variable.
@@ -536,7 +536,7 @@
             guna2Panel3.Size = new Size(54, 71);
             guna2Panel3.TabIndex = 0;
             // 
-            // Login
+            // LoginPrincipal
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -545,7 +545,7 @@
             Controls.Add(tblCredenciales);
             Controls.Add(panelHeader);
             FormBorderStyle = FormBorderStyle.None;
-            Name = "Login";
+            Name = "LoginPrincipal";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Login";
             WindowState = FormWindowState.Maximized;

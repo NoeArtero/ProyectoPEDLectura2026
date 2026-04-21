@@ -588,6 +588,7 @@
             numPaginaAgregarAnotacion.Font = new Font("Bahnschrift SemiBold", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             numPaginaAgregarAnotacion.Location = new Point(617, 54);
             numPaginaAgregarAnotacion.Margin = new Padding(3, 4, 3, 4);
+            numPaginaAgregarAnotacion.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
             numPaginaAgregarAnotacion.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numPaginaAgregarAnotacion.Name = "numPaginaAgregarAnotacion";
             numPaginaAgregarAnotacion.ShadowDecoration.CustomizableEdges = customizableEdges27;
