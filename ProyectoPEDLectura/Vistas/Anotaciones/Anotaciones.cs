@@ -8,9 +8,9 @@ using System.Windows.Forms;
 
 namespace ProyectoPEDLectura.Vistas.Anotaciones
 {
-    public partial class Anotaciones : UserControl
+    public partial class AnotacionesUC : UserControl
     {
-        public Anotaciones()
+        public AnotacionesUC()
         {
             InitializeComponent();
         }

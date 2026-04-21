@@ -1,6 +1,7 @@
 using Guna.UI2.WinForms;
 using ProyectoPEDLectura.Vistas.Inicio;
 using ProyectoPEDLectura.Vistas.Libros;
+using ProyectoPEDLectura.Vistas.Anotaciones;
 
 namespace ProyectoPEDLectura
 {
@@ -78,6 +79,7 @@ namespace ProyectoPEDLectura
         private void btnAnotaciones_Click(object sender, EventArgs e)
         {
             BotonSeleccionado(btnAnotaciones);
+            ShowView<AnotacionesUC>();  
         }
 
         private void btnPerfil_Click(object sender, EventArgs e)

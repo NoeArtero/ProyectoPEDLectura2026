@@ -1,10 +1,7 @@
 ﻿using ProyectoPEDLectura.extras;
 using ProyectoPEDLectura.extras.LibrosAgregados.ClaseAgregarLibros;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Windows.Forms;
+using System.Diagnostics;
+using System.IO;
 
 namespace ProyectoPEDLectura.Vistas.Libros
 {
@@ -154,6 +151,49 @@ namespace ProyectoPEDLectura.Vistas.Libros
                 {
                     Mensaje.MostrarError("No se encontró el libro.", "Error");
                 }
+            }
+        }
+
+
+        // Permite abrir el libro al hacer doble click en la fila del DataGridView
+        private void dgvLibros_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0)
+                return;
+
+            string? codigo = Convert.ToString(dgvLibros.Rows[e.RowIndex].Cells[1].Value);
+
+            if (string.IsNullOrWhiteSpace(codigo))
+            {
+                Mensaje.MostrarError("No se pudo obtener el código del libro seleccionado.", "Error");
+                return;
+            }
+
+            ArchivoAdjunto? libro = GestorLibros.BuscarPorCodigo(codigo);
+
+            if (libro == null)
+            {
+                Mensaje.MostrarError("No se encontró la información del libro.", "Error");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(libro.RutaArchivo) || !File.Exists(libro.RutaArchivo))
+            {
+                Mensaje.MostrarError("El archivo no existe o la ruta guardada no es válida.", "Archivo no encontrado");
+                return;
+            }
+
+            try
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = libro.RutaArchivo,
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                Mensaje.MostrarError($"No se pudo abrir el archivo.\nDetalle: {ex.Message}", "Error");
             }
         }
     }
