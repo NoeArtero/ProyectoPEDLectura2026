@@ -11,7 +11,7 @@ namespace ProyectoPEDLectura
         public DashBoard()
         {
             InitializeComponent();
-            ShowView<InicioUC>();
+            MostrarInicio();
             BotonSeleccionado(btnInicio);
         }
 
@@ -19,30 +19,72 @@ namespace ProyectoPEDLectura
 
         private readonly Dictionary<Type, UserControl> _views = new();
 
-        private T EnsureView<T>() where T : UserControl, new()
+        private InicioUC? inicioUC;
+        private LibrosUC? librosUC;
+        private AnotacionesUC? anotacionesUC;
+        private PerfilUC? perfilUC;
+
+        private void OcultarVistas()
         {
-            if (!_views.TryGetValue(typeof(T), out var view))
+            foreach (Control control in ViewHost.Controls)
             {
-                view = new T
-                {
-                    Dock = DockStyle.Fill
-                };
-                _views.Add(typeof(T), view);
-                ViewHost.Controls.Add(view);
+                control.Visible = false;
             }
-            return (T)view;
         }
 
-        private void ShowView<T>() where T : UserControl, new()
+        private void MostrarVista(UserControl vista)
         {
-            var targetView = EnsureView<T>();
-            foreach (Control c in ViewHost.Controls)
+            OcultarVistas();
+            vista.Visible = true;
+            vista.BringToFront();
+        }
+
+        private void MostrarInicio()
+        {
+            if (inicioUC == null)
             {
-                c.Visible = false;
+                inicioUC = new InicioUC();
+                inicioUC.Dock = DockStyle.Fill;
+                ViewHost.Controls.Add(inicioUC);
             }
 
-            targetView.Visible = true;
-            targetView.BringToFront();
+            MostrarVista(inicioUC);
+        }
+
+        private void MostrarLibros()
+        {
+            if (librosUC == null)
+            {
+                librosUC = new LibrosUC();
+                librosUC.Dock = DockStyle.Fill;
+                ViewHost.Controls.Add(librosUC);
+            }
+
+            MostrarVista(librosUC);
+        }
+
+        private void MostrarAnotaciones()
+        {
+            if (anotacionesUC == null)
+            {
+                anotacionesUC = new AnotacionesUC();
+                anotacionesUC.Dock = DockStyle.Fill;
+                ViewHost.Controls.Add(anotacionesUC);
+            }
+
+            MostrarVista(anotacionesUC);
+        }
+
+        private void MostrarPerfil()
+        {
+            if (perfilUC == null)
+            {
+                perfilUC = new PerfilUC();
+                perfilUC.Dock = DockStyle.Fill;
+                ViewHost.Controls.Add(perfilUC);
+            }
+
+            MostrarVista(perfilUC);
         }
         // fin metodos para poder ver las vistas (van a ser user controls)
 
@@ -68,26 +110,27 @@ namespace ProyectoPEDLectura
         private void btnInicio_Click(object sender, EventArgs e)
         {
             BotonSeleccionado(btnInicio);
-            ShowView<InicioUC>();
+            MostrarInicio();
         }
 
         private void btnLibros_Click(object sender, EventArgs e)
         {
             BotonSeleccionado(btnLibros);
-            ShowView<LibrosUC>();
+            MostrarLibros();
         }
 
         private void btnAnotaciones_Click(object sender, EventArgs e)
         {
             BotonSeleccionado(btnAnotaciones);
-            ShowView<AnotacionesUC>();  
+            MostrarAnotaciones();
         }
 
         private void btnPerfil_Click(object sender, EventArgs e)
         {
             BotonSeleccionado(btnPerfil);
-            ShowView<PerfilUC>();
+            MostrarPerfil();
         }
+
 
         private void btnSalir_Click(object sender, EventArgs e)
         {

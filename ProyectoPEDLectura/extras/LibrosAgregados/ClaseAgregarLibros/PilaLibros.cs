@@ -1,59 +1,66 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using ProyectoPEDLectura.extras.EstructurasPersonalizadas;
 
 namespace ProyectoPEDLectura.extras.LibrosAgregados.ClaseAgregarLibros
 {
     public class PilaLibros
     {
-        // Pila principal donde se guardan los libros
-        private Stack<ArchivoAdjunto> pilaLibros = new Stack<ArchivoAdjunto>();
+        // Usa la pila personalizada, no Stack<T> de C#
+        private ProyectoPEDLectura.extras.EstructurasPersonalizadas.PilaLibros pilaLibros =
+            new ProyectoPEDLectura.extras.EstructurasPersonalizadas.PilaLibros();
 
-        // Push: agrega un libro a la pila
+        public int Cantidad
+        {
+            get { return pilaLibros.Cantidad; }
+        }
+
+        public bool EstaVacia()
+        {
+            return pilaLibros.EstaVacia();
+        }
+
         public void ApilarLibro(ArchivoAdjunto libro)
         {
-            if (libro != null)
-            {
-                pilaLibros.Push(libro);
-            }
+            pilaLibros.ApilarLibro(libro);
         }
 
-        // Devuelve todos los libros en forma de lista
-        public List<ArchivoAdjunto> ObtenerLibros()
+        public ArchivoAdjunto? DesapilarLibro()
         {
-            return pilaLibros.ToList();
+            return pilaLibros.DesapilarLibro();
         }
 
-        // Elimina un libro por código
-        // Como Stack no elimina elementos del medio directamente,
-        // se usa una pila auxiliar
+        public ArchivoAdjunto? VerCima()
+        {
+            return pilaLibros.VerCima();
+        }
+
+        public ArchivoAdjunto? BuscarPorCodigo(string codigo)
+        {
+            return pilaLibros.BuscarPorCodigo(codigo);
+        }
+
         public bool EliminarPorCodigo(string codigo)
         {
-            if (string.IsNullOrWhiteSpace(codigo))
-                return false;
+            return pilaLibros.EliminarPorCodigo(codigo);
+        }
 
-            Stack<ArchivoAdjunto> auxiliar = new Stack<ArchivoAdjunto>();
-            bool eliminado = false;
+        public void Recorrer(AccionLibro accion)
+        {
+            pilaLibros.Recorrer(accion);
+        }
 
-            while (pilaLibros.Count > 0)
-            {
-                ArchivoAdjunto libro = pilaLibros.Pop();
+        public ArchivoAdjunto? ObtenerPorIndice(int indice)
+        {
+            return pilaLibros.ObtenerPorIndice(indice);
+        }
 
-                if (!eliminado && libro.Codigo == codigo)
-                {
-                    eliminado = true;
-                    continue;
-                }
+        public ArchivoAdjunto[] ObtenerLibros()
+        {
+            return pilaLibros.ObtenerComoArreglo();
+        }
 
-                auxiliar.Push(libro);
-            }
-
-            while (auxiliar.Count > 0)
-            {
-                pilaLibros.Push(auxiliar.Pop());
-            }
-
-            return eliminado;
+        public void Limpiar()
+        {
+            pilaLibros.Limpiar();
         }
     }
 }
