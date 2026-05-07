@@ -5,6 +5,7 @@ using ProyectoPEDLectura.extras.EstructurasPersonalizadas;
 
 namespace ProyectoPEDLectura.extras.LibrosAgregados.ClaseAgregarLibros
 {
+
     public static class GestorLibros
     {
         // Archivo TXT en la raíz de la aplicación
