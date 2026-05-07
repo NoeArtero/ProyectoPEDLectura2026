@@ -47,29 +47,39 @@ namespace ProyectoPEDLectura.Vistas.Libros
         {
             dgvLibros.Rows.Clear();
 
-            List<ArchivoAdjunto> libros = GestorLibros.ObtenerLibros();
-
-            string textoBuscar = txtBuscarProd.Text.Trim().ToLower();
+            string textoBuscar = txtBuscarProd.Text.Trim();
             string categoriaSeleccionada = cmbCategoriaProducto.Text.Trim();
 
-            if (!string.IsNullOrWhiteSpace(textoBuscar))
+            GestorLibros.RecorrerLibros(libro =>
             {
-                libros = libros.Where(libro =>
-                    (libro.Codigo != null && libro.Codigo.ToLower().Contains(textoBuscar)) ||
-                    (libro.NombreArchivo != null && libro.NombreArchivo.ToLower().Contains(textoBuscar))
-                ).ToList();
-            }
+                bool coincideBusqueda = true;
 
-            if (!string.IsNullOrWhiteSpace(categoriaSeleccionada) && categoriaSeleccionada != "Todas")
-            {
-                libros = libros.Where(libro =>
-                    libro.Categoria != null &&
-                    libro.Categoria.Equals(categoriaSeleccionada, StringComparison.OrdinalIgnoreCase)
-                ).ToList();
-            }
+                if (!string.IsNullOrWhiteSpace(textoBuscar))
+                {
+                    bool coincideCodigo =
+                        !string.IsNullOrWhiteSpace(libro.Codigo) &&
+                        libro.Codigo.Contains(textoBuscar, StringComparison.OrdinalIgnoreCase);
 
-            foreach (ArchivoAdjunto libro in libros)
-            {
+                    bool coincideNombre =
+                        !string.IsNullOrWhiteSpace(libro.NombreArchivo) &&
+                        libro.NombreArchivo.Contains(textoBuscar, StringComparison.OrdinalIgnoreCase);
+
+                    coincideBusqueda = coincideCodigo || coincideNombre;
+                }
+
+                bool coincideCategoria = true;
+
+                if (!string.IsNullOrWhiteSpace(categoriaSeleccionada) &&
+                    !categoriaSeleccionada.Equals("Todas", StringComparison.OrdinalIgnoreCase))
+                {
+                    coincideCategoria =
+                        !string.IsNullOrWhiteSpace(libro.Categoria) &&
+                        libro.Categoria.Equals(categoriaSeleccionada, StringComparison.OrdinalIgnoreCase);
+                }
+
+                if (!coincideBusqueda || !coincideCategoria)
+                    return;
+
                 int fila = dgvLibros.Rows.Add();
 
                 dgvLibros.Rows[fila].Cells[0].Value = libro.VistaPrevia;
@@ -80,7 +90,7 @@ namespace ProyectoPEDLectura.Vistas.Libros
                 dgvLibros.Rows[fila].Cells[5].Value = libro.FechaAgregado.ToShortDateString();
                 dgvLibros.Rows[fila].Cells[6].Value = "";
                 dgvLibros.Rows[fila].Cells[7].Value = "";
-            }
+            });
 
             ContarLibros();
         }

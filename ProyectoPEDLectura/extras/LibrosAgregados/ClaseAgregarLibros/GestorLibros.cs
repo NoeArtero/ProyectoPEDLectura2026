@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Linq;
+using ProyectoPEDLectura.extras.EstructurasPersonalizadas;
 
 namespace ProyectoPEDLectura.extras.LibrosAgregados.ClaseAgregarLibros
 {
@@ -14,8 +13,8 @@ namespace ProyectoPEDLectura.extras.LibrosAgregados.ClaseAgregarLibros
             "HistorialLibros.txt"
         );
 
-        // Lista en memoria
-        private static List<ArchivoAdjunto> libros = new List<ArchivoAdjunto>();
+        // Lista propia en memoria
+        private static ListaLibros libros = new ListaLibros();
 
         // Se ejecuta una sola vez al usar la clase
         static GestorLibros()
@@ -24,7 +23,6 @@ namespace ProyectoPEDLectura.extras.LibrosAgregados.ClaseAgregarLibros
             CargarDesdeArchivo();
         }
 
-        // Crear archivo vacío si no existe
         private static void CrearArchivoSiNoExiste()
         {
             if (!File.Exists(rutaArchivo))
@@ -33,7 +31,6 @@ namespace ProyectoPEDLectura.extras.LibrosAgregados.ClaseAgregarLibros
             }
         }
 
-        // Método para limpiar separadores y evitar errores en el TXT
         private static string LimpiarTexto(string? texto)
         {
             if (string.IsNullOrWhiteSpace(texto))
@@ -42,58 +39,61 @@ namespace ProyectoPEDLectura.extras.LibrosAgregados.ClaseAgregarLibros
             return texto.Replace("|", "/").Replace(Environment.NewLine, " ");
         }
 
-        // Agregar libro
         public static void AgregarLibro(ArchivoAdjunto libro)
         {
             if (libro == null)
                 throw new ArgumentNullException(nameof(libro));
 
-            // Evitar códigos repetidos
-            if (libros.Any(l => l.Codigo == libro.Codigo))
+            if (string.IsNullOrWhiteSpace(libro.Codigo))
+                throw new Exception("El libro debe tener un código.");
+
+            // Evitar códigos repetidos usando nuestra lista propia
+            if (libros.ExisteCodigo(libro.Codigo))
                 throw new Exception("Ya existe un libro con ese código.");
 
-            libros.Add(libro);
+            libros.Agregar(libro);
             GuardarEnArchivo();
         }
 
-        // Obtener todos los libros
-        public static List<ArchivoAdjunto> ObtenerLibros()
-        {
-            return new List<ArchivoAdjunto>(libros);
-        }
-
-        // Buscar un libro por código
         public static ArchivoAdjunto? BuscarPorCodigo(string codigo)
         {
-            return libros.FirstOrDefault(l => l.Codigo == codigo);
+            return libros.BuscarPorCodigo(codigo);
         }
 
-        public static List<ArchivoAdjunto> HistorialLibros
+        public static ListaLibros HistorialLibros
         {
             get { return libros; }
         }
 
-        // Eliminar libro por código
-        public static bool EliminarLibro(string codigo)
+        public static int TotalLibros
         {
-            var libro = libros.FirstOrDefault(l => l.Codigo == codigo);
-
-            if (libro == null)
-                return false;
-
-            libros.Remove(libro);
-            GuardarEnArchivo();
-            return true;
+            get { return libros.Cantidad; }
         }
 
-        // Guardar toda la lista en el TXT
+        public static void RecorrerLibros(AccionLibro accion)
+        {
+            libros.Recorrer(accion);
+        }
+
+        public static bool EliminarLibro(string codigo)
+        {
+            bool eliminado = libros.EliminarPorCodigo(codigo);
+
+            if (eliminado)
+            {
+                GuardarEnArchivo();
+            }
+
+            return eliminado;
+        }
+
         public static void GuardarEnArchivo()
         {
-            List<string> lineas = new List<string>();
+            StringBuilder contenido = new StringBuilder();
 
-            foreach (var libro in libros)
+            libros.Recorrer(libro =>
             {
-                lineas.Add(
+                contenido.AppendLine(
                     $"{LimpiarTexto(libro.Codigo)}|" +
                     $"{LimpiarTexto(libro.NombreArchivo)}|" +
                     $"{LimpiarTexto(libro.RutaArchivo)}|" +
@@ -101,27 +101,26 @@ namespace ProyectoPEDLectura.extras.LibrosAgregados.ClaseAgregarLibros
                     $"{libro.NumeroPaginas}|" +
                     $"{libro.FechaAgregado:yyyy-MM-dd}"
                 );
-            }
+            });
 
-            File.WriteAllLines(rutaArchivo, lineas);
+            File.WriteAllText(rutaArchivo, contenido.ToString(), Encoding.UTF8);
         }
 
-        // Leer desde el TXT
         public static void CargarDesdeArchivo()
         {
-            libros.Clear();
+            libros.Limpiar();
 
             if (!File.Exists(rutaArchivo))
                 return;
 
-            var lineas = File.ReadAllLines(rutaArchivo);
+            string[] lineas = File.ReadAllLines(rutaArchivo, Encoding.UTF8);
 
-            foreach (var linea in lineas)
+            foreach (string linea in lineas)
             {
                 if (string.IsNullOrWhiteSpace(linea))
                     continue;
 
-                var datos = linea.Split('|');
+                string[] datos = linea.Split('|');
 
                 if (datos.Length >= 6)
                 {
@@ -135,7 +134,7 @@ namespace ProyectoPEDLectura.extras.LibrosAgregados.ClaseAgregarLibros
                         FechaAgregado = DateTime.TryParse(datos[5], out DateTime fecha) ? fecha : DateTime.Now
                     };
 
-                    libros.Add(libro);
+                    libros.Agregar(libro);
                 }
             }
         }
