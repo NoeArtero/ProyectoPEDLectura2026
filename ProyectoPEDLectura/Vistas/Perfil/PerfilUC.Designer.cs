@@ -50,6 +50,9 @@
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges31 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges32 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges29 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges30 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges27 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
@@ -60,9 +63,6 @@
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges24 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges25 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges26 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             CardDatosUsuario = new Guna.UI2.WinForms.Guna2GradientPanel();
             btnCambiarUsContra = new Guna.UI2.WinForms.Guna2GradientButton();
             guna2HtmlLabel5 = new Guna.UI2.WinForms.Guna2HtmlLabel();
@@ -72,6 +72,8 @@
             lblDatosUsuario = new Guna.UI2.WinForms.Guna2HtmlLabel();
             kpiGrid = new TableLayoutPanel();
             guna2GradientPanel1 = new Guna.UI2.WinForms.Guna2GradientPanel();
+            guna2HtmlLabel6 = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            txtRecomendaciones = new TextBox();
             guna2HtmlLabel3 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             panelHeader = new Guna.UI2.WinForms.Guna2Panel();
             lblTitulo = new Guna.UI2.WinForms.Guna2HtmlLabel();
@@ -79,9 +81,15 @@
             guna2GradientPanel2 = new Guna.UI2.WinForms.Guna2GradientPanel();
             guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
             btnGuardarCambios = new Guna.UI2.WinForms.Guna2Button();
-            guna2Button1 = new Guna.UI2.WinForms.Guna2Button();
+            btnActualizar = new Guna.UI2.WinForms.Guna2Button();
             panelBody = new Guna.UI2.WinForms.Guna2Panel();
             tableLayoutPanel1 = new TableLayoutPanel();
+            dgvResumen = new Guna.UI2.WinForms.Guna2DataGridView();
+            CodigoLibro = new DataGridViewTextBoxColumn();
+            NombreLibro = new DataGridViewTextBoxColumn();
+            AnotacionesLibro = new DataGridViewTextBoxColumn();
+            FechaAgregado = new DataGridViewTextBoxColumn();
+            ProgresoLibro = new DataGridViewTextBoxColumn();
             ChartGrid = new TableLayoutPanel();
             PanelPedidosEstado = new Guna.UI2.WinForms.Guna2GradientPanel();
             CardFotoPerfil = new Guna.UI2.WinForms.Guna2GradientPanel();
@@ -89,14 +97,6 @@
             btnCambiarFoto = new Guna.UI2.WinForms.Guna2GradientButton();
             imgPerfil = new Guna.UI2.WinForms.Guna2PictureBox();
             guna2HtmlLabel2 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            textBox1 = new TextBox();
-            guna2HtmlLabel6 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            dgvResumen = new Guna.UI2.WinForms.Guna2DataGridView();
-            CodigoLibro = new DataGridViewTextBoxColumn();
-            NombreLibro = new DataGridViewTextBoxColumn();
-            AnotacionesLibro = new DataGridViewTextBoxColumn();
-            FechaAgregado = new DataGridViewTextBoxColumn();
-            ProgresoLibro = new DataGridViewTextBoxColumn();
             CardDatosUsuario.SuspendLayout();
             guna2GradientPanel1.SuspendLayout();
             panelHeader.SuspendLayout();
@@ -104,11 +104,11 @@
             guna2Panel1.SuspendLayout();
             panelBody.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvResumen).BeginInit();
             ChartGrid.SuspendLayout();
             PanelPedidosEstado.SuspendLayout();
             CardFotoPerfil.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)imgPerfil).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)dgvResumen).BeginInit();
             SuspendLayout();
             // 
             // CardDatosUsuario
@@ -266,7 +266,7 @@
             // 
             guna2GradientPanel1.BorderRadius = 15;
             guna2GradientPanel1.Controls.Add(guna2HtmlLabel6);
-            guna2GradientPanel1.Controls.Add(textBox1);
+            guna2GradientPanel1.Controls.Add(txtRecomendaciones);
             guna2GradientPanel1.Controls.Add(guna2HtmlLabel3);
             guna2GradientPanel1.CustomizableEdges = customizableEdges9;
             guna2GradientPanel1.Dock = DockStyle.Fill;
@@ -278,6 +278,30 @@
             guna2GradientPanel1.ShadowDecoration.CustomizableEdges = customizableEdges10;
             guna2GradientPanel1.Size = new Size(467, 284);
             guna2GradientPanel1.TabIndex = 3;
+            // 
+            // guna2HtmlLabel6
+            // 
+            guna2HtmlLabel6.BackColor = Color.Transparent;
+            guna2HtmlLabel6.Font = new Font("Bahnschrift", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            guna2HtmlLabel6.ForeColor = Color.Gainsboro;
+            guna2HtmlLabel6.Location = new Point(27, 64);
+            guna2HtmlLabel6.Margin = new Padding(3, 4, 3, 4);
+            guna2HtmlLabel6.Name = "guna2HtmlLabel6";
+            guna2HtmlLabel6.Size = new Size(396, 30);
+            guna2HtmlLabel6.TabIndex = 10;
+            guna2HtmlLabel6.Text = "Basado en tus gustos recomendamos:";
+            guna2HtmlLabel6.TextAlignment = ContentAlignment.MiddleCenter;
+            // 
+            // txtRecomendaciones
+            // 
+            txtRecomendaciones.BackColor = Color.White;
+            txtRecomendaciones.Font = new Font("Bahnschrift Condensed", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtRecomendaciones.Location = new Point(27, 101);
+            txtRecomendaciones.Multiline = true;
+            txtRecomendaciones.Name = "txtRecomendaciones";
+            txtRecomendaciones.ReadOnly = true;
+            txtRecomendaciones.Size = new Size(412, 162);
+            txtRecomendaciones.TabIndex = 9;
             // 
             // guna2HtmlLabel3
             // 
@@ -355,7 +379,7 @@
             // guna2Panel1
             // 
             guna2Panel1.Controls.Add(btnGuardarCambios);
-            guna2Panel1.Controls.Add(guna2Button1);
+            guna2Panel1.Controls.Add(btnActualizar);
             guna2Panel1.CustomizableEdges = customizableEdges19;
             guna2Panel1.Dock = DockStyle.Fill;
             guna2Panel1.Location = new Point(1150, 4);
@@ -386,26 +410,26 @@
             btnGuardarCambios.TabIndex = 5;
             btnGuardarCambios.Text = "Guardar cambios";
             // 
-            // guna2Button1
+            // btnActualizar
             // 
-            guna2Button1.Cursor = Cursors.Hand;
-            guna2Button1.CustomizableEdges = customizableEdges17;
-            guna2Button1.DisabledState.BorderColor = Color.DarkGray;
-            guna2Button1.DisabledState.CustomBorderColor = Color.DarkGray;
-            guna2Button1.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            guna2Button1.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            guna2Button1.FillColor = Color.FromArgb(150, 51, 3);
-            guna2Button1.Font = new Font("Bahnschrift SemiCondensed", 12F);
-            guna2Button1.ForeColor = Color.White;
-            guna2Button1.HoverState.FillColor = Color.FromArgb(60, 71, 136);
-            guna2Button1.Location = new Point(3, 4);
-            guna2Button1.Margin = new Padding(3, 4, 3, 4);
-            guna2Button1.Name = "guna2Button1";
-            guna2Button1.Padding = new Padding(11, 13, 11, 13);
-            guna2Button1.ShadowDecoration.CustomizableEdges = customizableEdges18;
-            guna2Button1.Size = new Size(193, 79);
-            guna2Button1.TabIndex = 4;
-            guna2Button1.Text = "Actualizar";
+            btnActualizar.Cursor = Cursors.Hand;
+            btnActualizar.CustomizableEdges = customizableEdges17;
+            btnActualizar.DisabledState.BorderColor = Color.DarkGray;
+            btnActualizar.DisabledState.CustomBorderColor = Color.DarkGray;
+            btnActualizar.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            btnActualizar.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            btnActualizar.FillColor = Color.FromArgb(150, 51, 3);
+            btnActualizar.Font = new Font("Bahnschrift SemiCondensed", 12F);
+            btnActualizar.ForeColor = Color.White;
+            btnActualizar.HoverState.FillColor = Color.FromArgb(60, 71, 136);
+            btnActualizar.Location = new Point(3, 4);
+            btnActualizar.Margin = new Padding(3, 4, 3, 4);
+            btnActualizar.Name = "btnActualizar";
+            btnActualizar.Padding = new Padding(11, 13, 11, 13);
+            btnActualizar.ShadowDecoration.CustomizableEdges = customizableEdges18;
+            btnActualizar.Size = new Size(193, 79);
+            btnActualizar.TabIndex = 4;
+            btnActualizar.Text = "Actualizar";
             // 
             // panelBody
             // 
@@ -439,6 +463,100 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 225F));
             tableLayoutPanel1.Size = new Size(1434, 218);
             tableLayoutPanel1.TabIndex = 3;
+            // 
+            // dgvResumen
+            // 
+            dgvResumen.AllowUserToAddRows = false;
+            dgvResumen.AllowUserToDeleteRows = false;
+            dataGridViewCellStyle1.BackColor = Color.White;
+            dataGridViewCellStyle1.Font = new Font("Bahnschrift", 10F);
+            dgvResumen.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = Color.FromArgb(255, 128, 0);
+            dataGridViewCellStyle2.Font = new Font("Bahnschrift", 12.25F, FontStyle.Bold);
+            dataGridViewCellStyle2.ForeColor = Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            dgvResumen.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dgvResumen.ColumnHeadersHeight = 32;
+            dgvResumen.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
+            dgvResumen.Columns.AddRange(new DataGridViewColumn[] { CodigoLibro, NombreLibro, AnotacionesLibro, FechaAgregado, ProgresoLibro });
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = Color.White;
+            dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle3.ForeColor = Color.FromArgb(71, 69, 94);
+            dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(231, 229, 255);
+            dataGridViewCellStyle3.SelectionForeColor = Color.FromArgb(71, 69, 94);
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
+            dgvResumen.DefaultCellStyle = dataGridViewCellStyle3;
+            dgvResumen.Dock = DockStyle.Fill;
+            dgvResumen.GridColor = Color.FromArgb(231, 229, 255);
+            dgvResumen.Location = new Point(3, 4);
+            dgvResumen.Margin = new Padding(3, 4, 3, 4);
+            dgvResumen.Name = "dgvResumen";
+            dgvResumen.ReadOnly = true;
+            dgvResumen.RowHeadersVisible = false;
+            dgvResumen.RowHeadersWidth = 51;
+            dgvResumen.RowTemplate.Height = 25;
+            dgvResumen.Size = new Size(1141, 210);
+            dgvResumen.TabIndex = 4;
+            dgvResumen.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
+            dgvResumen.ThemeStyle.AlternatingRowsStyle.Font = null;
+            dgvResumen.ThemeStyle.AlternatingRowsStyle.ForeColor = Color.Empty;
+            dgvResumen.ThemeStyle.AlternatingRowsStyle.SelectionBackColor = Color.Empty;
+            dgvResumen.ThemeStyle.AlternatingRowsStyle.SelectionForeColor = Color.Empty;
+            dgvResumen.ThemeStyle.BackColor = Color.White;
+            dgvResumen.ThemeStyle.GridColor = Color.FromArgb(231, 229, 255);
+            dgvResumen.ThemeStyle.HeaderStyle.BackColor = Color.FromArgb(100, 88, 255);
+            dgvResumen.ThemeStyle.HeaderStyle.BorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgvResumen.ThemeStyle.HeaderStyle.Font = new Font("Segoe UI", 9F);
+            dgvResumen.ThemeStyle.HeaderStyle.ForeColor = Color.White;
+            dgvResumen.ThemeStyle.HeaderStyle.HeaightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
+            dgvResumen.ThemeStyle.HeaderStyle.Height = 32;
+            dgvResumen.ThemeStyle.ReadOnly = true;
+            dgvResumen.ThemeStyle.RowsStyle.BackColor = Color.White;
+            dgvResumen.ThemeStyle.RowsStyle.BorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvResumen.ThemeStyle.RowsStyle.Font = new Font("Segoe UI", 9F);
+            dgvResumen.ThemeStyle.RowsStyle.ForeColor = Color.FromArgb(71, 69, 94);
+            dgvResumen.ThemeStyle.RowsStyle.Height = 25;
+            dgvResumen.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(231, 229, 255);
+            dgvResumen.ThemeStyle.RowsStyle.SelectionForeColor = Color.FromArgb(71, 69, 94);
+            // 
+            // CodigoLibro
+            // 
+            CodigoLibro.HeaderText = "Código";
+            CodigoLibro.MinimumWidth = 6;
+            CodigoLibro.Name = "CodigoLibro";
+            CodigoLibro.ReadOnly = true;
+            // 
+            // NombreLibro
+            // 
+            NombreLibro.HeaderText = "Nombre";
+            NombreLibro.MinimumWidth = 6;
+            NombreLibro.Name = "NombreLibro";
+            NombreLibro.ReadOnly = true;
+            // 
+            // AnotacionesLibro
+            // 
+            AnotacionesLibro.HeaderText = "Anotaciones";
+            AnotacionesLibro.MinimumWidth = 6;
+            AnotacionesLibro.Name = "AnotacionesLibro";
+            AnotacionesLibro.ReadOnly = true;
+            // 
+            // FechaAgregado
+            // 
+            FechaAgregado.HeaderText = "Fecha de Agregado";
+            FechaAgregado.MinimumWidth = 6;
+            FechaAgregado.Name = "FechaAgregado";
+            FechaAgregado.ReadOnly = true;
+            // 
+            // ProgresoLibro
+            // 
+            ProgresoLibro.HeaderText = "Progreso";
+            ProgresoLibro.MinimumWidth = 6;
+            ProgresoLibro.Name = "ProgresoLibro";
+            ProgresoLibro.ReadOnly = true;
             // 
             // ChartGrid
             // 
@@ -578,124 +696,6 @@
             guna2HtmlLabel2.Text = "Foto de perfil";
             guna2HtmlLabel2.TextAlignment = ContentAlignment.MiddleCenter;
             // 
-            // textBox1
-            // 
-            textBox1.BackColor = Color.White;
-            textBox1.Font = new Font("Bahnschrift Condensed", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBox1.Location = new Point(27, 101);
-            textBox1.Multiline = true;
-            textBox1.Name = "textBox1";
-            textBox1.ReadOnly = true;
-            textBox1.Size = new Size(412, 162);
-            textBox1.TabIndex = 9;
-            // 
-            // guna2HtmlLabel6
-            // 
-            guna2HtmlLabel6.BackColor = Color.Transparent;
-            guna2HtmlLabel6.Font = new Font("Bahnschrift", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            guna2HtmlLabel6.ForeColor = Color.Gainsboro;
-            guna2HtmlLabel6.Location = new Point(27, 64);
-            guna2HtmlLabel6.Margin = new Padding(3, 4, 3, 4);
-            guna2HtmlLabel6.Name = "guna2HtmlLabel6";
-            guna2HtmlLabel6.Size = new Size(396, 30);
-            guna2HtmlLabel6.TabIndex = 10;
-            guna2HtmlLabel6.Text = "Basado en tus gustos recomendamos:";
-            guna2HtmlLabel6.TextAlignment = ContentAlignment.MiddleCenter;
-            // 
-            // dgvResumen
-            // 
-            dgvResumen.AllowUserToAddRows = false;
-            dgvResumen.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle1.BackColor = Color.White;
-            dataGridViewCellStyle1.Font = new Font("Bahnschrift", 10F);
-            dgvResumen.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = Color.FromArgb(255, 128, 0);
-            dataGridViewCellStyle2.Font = new Font("Bahnschrift", 12.25F, FontStyle.Bold);
-            dataGridViewCellStyle2.ForeColor = Color.White;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            dgvResumen.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            dgvResumen.ColumnHeadersHeight = 32;
-            dgvResumen.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
-            dgvResumen.Columns.AddRange(new DataGridViewColumn[] { CodigoLibro, NombreLibro, AnotacionesLibro, FechaAgregado, ProgresoLibro });
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = Color.White;
-            dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle3.ForeColor = Color.FromArgb(71, 69, 94);
-            dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(231, 229, 255);
-            dataGridViewCellStyle3.SelectionForeColor = Color.FromArgb(71, 69, 94);
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
-            dgvResumen.DefaultCellStyle = dataGridViewCellStyle3;
-            dgvResumen.Dock = DockStyle.Fill;
-            dgvResumen.GridColor = Color.FromArgb(231, 229, 255);
-            dgvResumen.Location = new Point(3, 4);
-            dgvResumen.Margin = new Padding(3, 4, 3, 4);
-            dgvResumen.Name = "dgvResumen";
-            dgvResumen.ReadOnly = true;
-            dgvResumen.RowHeadersVisible = false;
-            dgvResumen.RowHeadersWidth = 51;
-            dgvResumen.RowTemplate.Height = 25;
-            dgvResumen.Size = new Size(1141, 210);
-            dgvResumen.TabIndex = 4;
-            dgvResumen.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
-            dgvResumen.ThemeStyle.AlternatingRowsStyle.Font = null;
-            dgvResumen.ThemeStyle.AlternatingRowsStyle.ForeColor = Color.Empty;
-            dgvResumen.ThemeStyle.AlternatingRowsStyle.SelectionBackColor = Color.Empty;
-            dgvResumen.ThemeStyle.AlternatingRowsStyle.SelectionForeColor = Color.Empty;
-            dgvResumen.ThemeStyle.BackColor = Color.White;
-            dgvResumen.ThemeStyle.GridColor = Color.FromArgb(231, 229, 255);
-            dgvResumen.ThemeStyle.HeaderStyle.BackColor = Color.FromArgb(100, 88, 255);
-            dgvResumen.ThemeStyle.HeaderStyle.BorderStyle = DataGridViewHeaderBorderStyle.None;
-            dgvResumen.ThemeStyle.HeaderStyle.Font = new Font("Segoe UI", 9F);
-            dgvResumen.ThemeStyle.HeaderStyle.ForeColor = Color.White;
-            dgvResumen.ThemeStyle.HeaderStyle.HeaightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
-            dgvResumen.ThemeStyle.HeaderStyle.Height = 32;
-            dgvResumen.ThemeStyle.ReadOnly = true;
-            dgvResumen.ThemeStyle.RowsStyle.BackColor = Color.White;
-            dgvResumen.ThemeStyle.RowsStyle.BorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            dgvResumen.ThemeStyle.RowsStyle.Font = new Font("Segoe UI", 9F);
-            dgvResumen.ThemeStyle.RowsStyle.ForeColor = Color.FromArgb(71, 69, 94);
-            dgvResumen.ThemeStyle.RowsStyle.Height = 25;
-            dgvResumen.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(231, 229, 255);
-            dgvResumen.ThemeStyle.RowsStyle.SelectionForeColor = Color.FromArgb(71, 69, 94);
-            // 
-            // CodigoLibro
-            // 
-            CodigoLibro.HeaderText = "Código";
-            CodigoLibro.MinimumWidth = 6;
-            CodigoLibro.Name = "CodigoLibro";
-            CodigoLibro.ReadOnly = true;
-            // 
-            // NombreLibro
-            // 
-            NombreLibro.HeaderText = "Nombre";
-            NombreLibro.MinimumWidth = 6;
-            NombreLibro.Name = "NombreLibro";
-            NombreLibro.ReadOnly = true;
-            // 
-            // AnotacionesLibro
-            // 
-            AnotacionesLibro.HeaderText = "Anotaciones";
-            AnotacionesLibro.MinimumWidth = 6;
-            AnotacionesLibro.Name = "AnotacionesLibro";
-            AnotacionesLibro.ReadOnly = true;
-            // 
-            // FechaAgregado
-            // 
-            FechaAgregado.HeaderText = "Fecha de Agregado";
-            FechaAgregado.MinimumWidth = 6;
-            FechaAgregado.Name = "FechaAgregado";
-            FechaAgregado.ReadOnly = true;
-            // 
-            // ProgresoLibro
-            // 
-            ProgresoLibro.HeaderText = "Progreso";
-            ProgresoLibro.MinimumWidth = 6;
-            ProgresoLibro.Name = "ProgresoLibro";
-            ProgresoLibro.ReadOnly = true;
-            // 
             // PerfilUC
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -715,12 +715,12 @@
             guna2Panel1.ResumeLayout(false);
             panelBody.ResumeLayout(false);
             tableLayoutPanel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgvResumen).EndInit();
             ChartGrid.ResumeLayout(false);
             PanelPedidosEstado.ResumeLayout(false);
             CardFotoPerfil.ResumeLayout(false);
             CardFotoPerfil.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)imgPerfil).EndInit();
-            ((System.ComponentModel.ISupportInitialize)dgvResumen).EndInit();
             ResumeLayout(false);
         }
 
@@ -742,7 +742,7 @@
         private Guna.UI2.WinForms.Guna2GradientPanel guna2GradientPanel2;
         private Guna.UI2.WinForms.Guna2Panel guna2Panel1;
         private Guna.UI2.WinForms.Guna2Button btnGuardarCambios;
-        private Guna.UI2.WinForms.Guna2Button guna2Button1;
+        private Guna.UI2.WinForms.Guna2Button btnActualizar;
         private Guna.UI2.WinForms.Guna2Panel panelBody;
         private TableLayoutPanel tableLayoutPanel1;
         private TableLayoutPanel ChartGrid;
@@ -753,7 +753,7 @@
         private Guna.UI2.WinForms.Guna2PictureBox imgPerfil;
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel2;
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel6;
-        private TextBox textBox1;
+        private TextBox txtRecomendaciones;
         private Guna.UI2.WinForms.Guna2DataGridView dgvResumen;
         private DataGridViewTextBoxColumn CodigoLibro;
         private DataGridViewTextBoxColumn NombreLibro;

@@ -75,7 +75,7 @@ namespace ProyectoPEDLectura
             MostrarVista(anotacionesUC);
         }
 
-        private void MostrarPerfil()
+        private async void MostrarPerfil()
         {
             if (perfilUC == null)
             {
@@ -85,6 +85,8 @@ namespace ProyectoPEDLectura
             }
 
             MostrarVista(perfilUC);
+
+            await perfilUC.ActualizarRecomendacionAsync();
         }
         // fin metodos para poder ver las vistas (van a ser user controls)
 
