@@ -367,6 +367,7 @@
             btnEditarAnotacion.TabIndex = 16;
             btnEditarAnotacion.Text = "Editar anotación";
             btnEditarAnotacion.TextOffset = new Point(-15, 23);
+            btnEditarAnotacion.Click += btnEditarAnotacion_Click;
             // 
             // btnEliminarAnotacion
             // 
@@ -392,6 +393,7 @@
             btnEliminarAnotacion.TabIndex = 2;
             btnEliminarAnotacion.Text = "Eliminar";
             btnEliminarAnotacion.TextOffset = new Point(-15, 23);
+            btnEliminarAnotacion.Click += btnEliminarAnotacion_Click;
             // 
             // txtLeerAnotacion
             // 
@@ -454,6 +456,7 @@
             btnLeerAnotacion.TabIndex = 12;
             btnLeerAnotacion.Text = "Leer Anotación";
             btnLeerAnotacion.TextOffset = new Point(-15, 23);
+            btnLeerAnotacion.Click += btnLeerAnotacion_Click;
             // 
             // lstListaAnotaciones
             // 
@@ -511,6 +514,7 @@
             btnAgregarMeta.TabIndex = 3;
             btnAgregarMeta.Text = "Agregar meta";
             btnAgregarMeta.TextOffset = new Point(-15, 23);
+            btnAgregarMeta.Click += btnAgregarMeta_Click;
             // 
             // guna2NumericUpDown3
             // 
@@ -635,6 +639,7 @@
             btnAgregarAnotacion.TabIndex = 0;
             btnAgregarAnotacion.Text = "Agregar anotación";
             btnAgregarAnotacion.TextOffset = new Point(-15, 23);
+            btnAgregarAnotacion.Click += btnAgregarAnotacion_Click;
             // 
             // lblAnotacionesLibros
             // 
