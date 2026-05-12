@@ -1,45 +1,79 @@
 ﻿using ProyectoPEDLectura.extras;
+using ProyectoPEDLectura.extras.Usuarios;
 
 namespace ProyectoPEDLectura.Vistas.Login
 {
     public partial class AgregarNuevoUsuarioUC : UserControl
     {
+        private string rutaFotoSeleccionada = "";
+
         public AgregarNuevoUsuarioUC()
         {
             InitializeComponent();
+
+            cmbGeneroUsuarioAgregar.Items.Clear();
             cmbGeneroUsuarioAgregar.Items.Add("Masculino");
             cmbGeneroUsuarioAgregar.Items.Add("Femenino");
             cmbGeneroUsuarioAgregar.Items.Add("Prefiero no decir");
             cmbGeneroUsuarioAgregar.SelectedIndex = 0;
+
+            imgAgregarUsuario.SizeMode = PictureBoxSizeMode.StretchImage;
         }
 
-        // función bool para validar si se han llenado todos los campos
         private bool Valido()
         {
-            if (string.IsNullOrWhiteSpace(txtAgregarNombreUsuario.Text) ||
-                string.IsNullOrWhiteSpace(txtContra.Text))
-            {
+            if (string.IsNullOrWhiteSpace(txtAgregarNombreUsuario.Text))
                 return false;
-            }
-            else
-            {
-                return true;
-            }
+
+            if (string.IsNullOrWhiteSpace(txtContra.Text))
+                return false;
+
+            if (cmbGeneroUsuarioAgregar.SelectedItem == null)
+                return false;
+
+            if (string.IsNullOrWhiteSpace(rutaFotoSeleccionada))
+                return false;
+
+            return true;
         }
 
         private void btnAgregarUsuario_Click(object sender, EventArgs e)
         {
             if (!Valido())
             {
-                Mensaje.MostrarError("Verifique que los espacios estén correctamente llenados", "Error de agregado");
+                Mensaje.MostrarError(
+                    "Verifique que el usuario, contraseña, género e imagen estén completos.",
+                    "Error de agregado"
+                );
+                return;
             }
-            else
+
+            if (Mensaje.MostrarConfirmacion("¿Seguro que quiere guardar este usuario?", "Agregar usuario") != DialogResult.Yes)
+                return;
+
+            try
             {
-                if (Mensaje.MostrarConfirmacion("¿Seguro que quiere guardar este usuario?", "Agregar usuario") == DialogResult.Yes)
-                {
-                    Parent?.Controls.Remove(this);
-                    Mensaje.MostrarMensaje("Usuario agregado con éxito.", "Usuario agregado");
-                }
+                string nombreUsuario = txtAgregarNombreUsuario.Text.Trim();
+                string contrasena = txtContra.Text.Trim();
+                string genero = cmbGeneroUsuarioAgregar.SelectedItem?.ToString() ?? "";
+
+                Usuario nuevoUsuario = GestorUsuarios.CrearUsuario(
+                    nombreUsuario,
+                    contrasena,
+                    genero,
+                    rutaFotoSeleccionada
+                );
+
+                Mensaje.MostrarMensaje(
+                    $"Usuario '{nuevoUsuario.NombreUsuario}' agregado con éxito.",
+                    "Usuario agregado"
+                );
+
+                Parent?.Controls.Remove(this);
+            }
+            catch (Exception ex)
+            {
+                Mensaje.MostrarError(ex.Message, "Error al crear usuario");
             }
         }
 
@@ -53,15 +87,33 @@ namespace ProyectoPEDLectura.Vistas.Login
 
         private void btnElegirImagenUsuario_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
+            using OpenFileDialog openFileDialog = new OpenFileDialog();
+
+            openFileDialog.Title = "Seleccione una foto de perfil";
             openFileDialog.Filter = "Archivos de imagen|*.jpg;*.jpeg;*.png;*.bmp;*.gif";
+
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                string rutaImagen = openFileDialog.FileName;
-                imgAgregarUsuario.Image = Image.FromFile(rutaImagen);
-                imgAgregarUsuario.SizeMode = PictureBoxSizeMode.StretchImage;
+                rutaFotoSeleccionada = openFileDialog.FileName;
+
+                try
+                {
+                    imgAgregarUsuario.Image?.Dispose();
+                    imgAgregarUsuario.Image = CargarImagenSinBloquearArchivo(rutaFotoSeleccionada);
+                    imgAgregarUsuario.SizeMode = PictureBoxSizeMode.StretchImage;
+                }
+                catch
+                {
+                    rutaFotoSeleccionada = "";
+                    Mensaje.MostrarError("No se pudo cargar la imagen seleccionada.", "Error de imagen");
+                }
             }
+        }
+
+        private Image CargarImagenSinBloquearArchivo(string rutaImagen)
+        {
+            using Image imagenTemporal = Image.FromFile(rutaImagen);
+            return new Bitmap(imagenTemporal);
         }
     }
 }
-
