@@ -49,8 +49,6 @@
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges15 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges21 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges22 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
@@ -70,6 +68,8 @@
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges38 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges39 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             PanelArticulos = new Guna.UI2.WinForms.Guna2Panel();
             lblTotalAnotaciones = new Guna.UI2.WinForms.Guna2HtmlLabel();
             panelTitulo = new Guna.UI2.WinForms.Guna2Panel();
@@ -88,7 +88,6 @@
             txtLeerAnotacion = new TextBox();
             guna2HtmlLabel7 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             guna2HtmlLabel4 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            btnLeerAnotacion = new Guna.UI2.WinForms.Guna2Button();
             lstListaAnotaciones = new ListBox();
             txtAnotacionLibro = new TextBox();
             guna2HtmlLabel1 = new Guna.UI2.WinForms.Guna2HtmlLabel();
@@ -110,6 +109,7 @@
             AnotacionesLibro = new DataGridViewTextBoxColumn();
             ProgresoLibro = new DataGridViewTextBoxColumn();
             PanelBotonesAccion = new Guna.UI2.WinForms.Guna2Panel();
+            btnLeerAnotacion = new Guna.UI2.WinForms.Guna2Button();
             PanelArticulos.SuspendLayout();
             panelTitulo.SuspendLayout();
             panelBotones.SuspendLayout();
@@ -129,12 +129,11 @@
             PanelArticulos.Controls.Add(lblTotalAnotaciones);
             PanelArticulos.CustomizableEdges = customizableEdges1;
             PanelArticulos.Dock = DockStyle.Right;
-            PanelArticulos.Location = new Point(1399, 16);
-            PanelArticulos.Margin = new Padding(3, 4, 3, 4);
+            PanelArticulos.Location = new Point(1224, 12);
             PanelArticulos.Name = "PanelArticulos";
-            PanelArticulos.Padding = new Padding(0, 11, 9, 11);
+            PanelArticulos.Padding = new Padding(0, 8, 8, 8);
             PanelArticulos.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            PanelArticulos.Size = new Size(225, 61);
+            PanelArticulos.Size = new Size(197, 46);
             PanelArticulos.TabIndex = 1;
             PanelArticulos.UseTransparentBackground = true;
             // 
@@ -144,10 +143,9 @@
             lblTotalAnotaciones.Dock = DockStyle.Right;
             lblTotalAnotaciones.Font = new Font("Bahnschrift SemiCondensed", 15F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblTotalAnotaciones.ForeColor = Color.Gainsboro;
-            lblTotalAnotaciones.Location = new Point(31, 11);
-            lblTotalAnotaciones.Margin = new Padding(3, 4, 3, 4);
+            lblTotalAnotaciones.Location = new Point(45, 8);
             lblTotalAnotaciones.Name = "lblTotalAnotaciones";
-            lblTotalAnotaciones.Size = new Size(185, 32);
+            lblTotalAnotaciones.Size = new Size(144, 30);
             lblTotalAnotaciones.TabIndex = 3;
             lblTotalAnotaciones.Text = "N° de anotaciones:";
             lblTotalAnotaciones.TextAlignment = ContentAlignment.MiddleRight;
@@ -159,10 +157,11 @@
             panelTitulo.Controls.Add(guna2Shapes1);
             panelTitulo.CustomizableEdges = customizableEdges4;
             panelTitulo.Dock = DockStyle.Left;
-            panelTitulo.Location = new Point(18, 16);
+            panelTitulo.Location = new Point(16, 12);
+            panelTitulo.Margin = new Padding(3, 2, 3, 2);
             panelTitulo.Name = "panelTitulo";
             panelTitulo.ShadowDecoration.CustomizableEdges = customizableEdges5;
-            panelTitulo.Size = new Size(308, 61);
+            panelTitulo.Size = new Size(270, 46);
             panelTitulo.TabIndex = 9;
             // 
             // lblTitulo
@@ -170,10 +169,9 @@
             lblTitulo.BackColor = Color.Transparent;
             lblTitulo.Font = new Font("Bahnschrift SemiCondensed", 20.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblTitulo.ForeColor = Color.Gainsboro;
-            lblTitulo.Location = new Point(3, 5);
-            lblTitulo.Margin = new Padding(3, 4, 3, 4);
+            lblTitulo.Location = new Point(3, 4);
             lblTitulo.Name = "lblTitulo";
-            lblTitulo.Size = new Size(279, 43);
+            lblTitulo.Size = new Size(220, 35);
             lblTitulo.TabIndex = 0;
             lblTitulo.Text = "Anotaciones y metas";
             lblTitulo.TextAlignment = ContentAlignment.MiddleCenter;
@@ -183,14 +181,13 @@
             guna2Shapes1.BackColor = Color.Transparent;
             guna2Shapes1.BorderColor = Color.White;
             guna2Shapes1.FillColor = Color.White;
-            guna2Shapes1.Location = new Point(274, -12);
-            guna2Shapes1.Margin = new Padding(3, 4, 3, 4);
+            guna2Shapes1.Location = new Point(240, -9);
             guna2Shapes1.Name = "guna2Shapes1";
             guna2Shapes1.PolygonSides = 2;
             guna2Shapes1.PolygonSkip = 1;
             guna2Shapes1.Rotate = 0F;
             guna2Shapes1.RoundedEdges = customizableEdges3;
-            guna2Shapes1.Size = new Size(22, 93);
+            guna2Shapes1.Size = new Size(19, 70);
             guna2Shapes1.TabIndex = 2;
             guna2Shapes1.UseTransparentBackground = true;
             guna2Shapes1.Zoom = 80;
@@ -204,10 +201,11 @@
             panelBotones.Controls.Add(cmbCategoriaProducto);
             panelBotones.CustomizableEdges = customizableEdges10;
             panelBotones.Dock = DockStyle.Left;
-            panelBotones.Location = new Point(326, 16);
+            panelBotones.Location = new Point(286, 12);
+            panelBotones.Margin = new Padding(3, 2, 3, 2);
             panelBotones.Name = "panelBotones";
             panelBotones.ShadowDecoration.CustomizableEdges = customizableEdges11;
-            panelBotones.Size = new Size(920, 61);
+            panelBotones.Size = new Size(805, 46);
             panelBotones.TabIndex = 10;
             // 
             // lblBuscar
@@ -215,10 +213,9 @@
             lblBuscar.BackColor = Color.Transparent;
             lblBuscar.Font = new Font("Bahnschrift SemiCondensed", 15F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblBuscar.ForeColor = Color.Gainsboro;
-            lblBuscar.Location = new Point(6, 13);
-            lblBuscar.Margin = new Padding(3, 4, 3, 4);
+            lblBuscar.Location = new Point(5, 10);
             lblBuscar.Name = "lblBuscar";
-            lblBuscar.Size = new Size(76, 32);
+            lblBuscar.Size = new Size(61, 26);
             lblBuscar.TabIndex = 3;
             lblBuscar.Text = "Buscar: ";
             lblBuscar.TextAlignment = ContentAlignment.MiddleCenter;
@@ -235,13 +232,13 @@
             txtBuscarProd.Font = new Font("Bahnschrift", 10F);
             txtBuscarProd.ForeColor = Color.DimGray;
             txtBuscarProd.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtBuscarProd.Location = new Point(81, 13);
-            txtBuscarProd.Margin = new Padding(6, 7, 6, 7);
+            txtBuscarProd.Location = new Point(71, 10);
+            txtBuscarProd.Margin = new Padding(5, 5, 5, 5);
             txtBuscarProd.Name = "txtBuscarProd";
             txtBuscarProd.PlaceholderText = "Nombre o código";
             txtBuscarProd.SelectedText = "";
             txtBuscarProd.ShadowDecoration.CustomizableEdges = customizableEdges7;
-            txtBuscarProd.Size = new Size(182, 29);
+            txtBuscarProd.Size = new Size(159, 22);
             txtBuscarProd.TabIndex = 4;
             // 
             // guna2HtmlLabel2
@@ -249,10 +246,9 @@
             guna2HtmlLabel2.BackColor = Color.Transparent;
             guna2HtmlLabel2.Font = new Font("Bahnschrift SemiCondensed", 15F, FontStyle.Regular, GraphicsUnit.Point, 0);
             guna2HtmlLabel2.ForeColor = Color.Gainsboro;
-            guna2HtmlLabel2.Location = new Point(272, 13);
-            guna2HtmlLabel2.Margin = new Padding(3, 4, 3, 4);
+            guna2HtmlLabel2.Location = new Point(238, 10);
             guna2HtmlLabel2.Name = "guna2HtmlLabel2";
-            guna2HtmlLabel2.Size = new Size(103, 32);
+            guna2HtmlLabel2.Size = new Size(79, 26);
             guna2HtmlLabel2.TabIndex = 5;
             guna2HtmlLabel2.Text = "Categoría:";
             guna2HtmlLabel2.TextAlignment = ContentAlignment.MiddleCenter;
@@ -269,11 +265,10 @@
             cmbCategoriaProducto.ForeColor = Color.DimGray;
             cmbCategoriaProducto.ItemHeight = 30;
             cmbCategoriaProducto.ItemsAppearance.SelectedBackColor = Color.FromArgb(224, 224, 224);
-            cmbCategoriaProducto.Location = new Point(381, 13);
-            cmbCategoriaProducto.Margin = new Padding(3, 4, 3, 4);
+            cmbCategoriaProducto.Location = new Point(333, 10);
             cmbCategoriaProducto.Name = "cmbCategoriaProducto";
             cmbCategoriaProducto.ShadowDecoration.CustomizableEdges = customizableEdges9;
-            cmbCategoriaProducto.Size = new Size(209, 36);
+            cmbCategoriaProducto.Size = new Size(183, 36);
             cmbCategoriaProducto.TabIndex = 6;
             // 
             // panelHeader
@@ -285,14 +280,13 @@
             panelHeader.Dock = DockStyle.Top;
             panelHeader.FillColor = Color.FromArgb(150, 51, 3);
             panelHeader.Location = new Point(0, 0);
-            panelHeader.Margin = new Padding(3, 4, 3, 4);
             panelHeader.Name = "panelHeader";
-            panelHeader.Padding = new Padding(18, 16, 18, 16);
+            panelHeader.Padding = new Padding(16, 12, 16, 12);
             panelHeader.ShadowDecoration.BorderRadius = 5;
             panelHeader.ShadowDecoration.Color = Color.FromArgb(29, 27, 52);
             panelHeader.ShadowDecoration.CustomizableEdges = customizableEdges13;
             panelHeader.ShadowDecoration.Depth = 5;
-            panelHeader.Size = new Size(1642, 93);
+            panelHeader.Size = new Size(1437, 70);
             panelHeader.TabIndex = 5;
             // 
             // PanelAnotacionesMetas
@@ -304,12 +298,11 @@
             PanelAnotacionesMetas.CustomizableEdges = customizableEdges36;
             PanelAnotacionesMetas.Dock = DockStyle.Fill;
             PanelAnotacionesMetas.FillColor = Color.FromArgb(150, 51, 3);
-            PanelAnotacionesMetas.Location = new Point(0, 103);
-            PanelAnotacionesMetas.Margin = new Padding(3, 4, 3, 4);
+            PanelAnotacionesMetas.Location = new Point(0, 78);
             PanelAnotacionesMetas.Name = "PanelAnotacionesMetas";
-            PanelAnotacionesMetas.Padding = new Padding(7, 8, 7, 8);
+            PanelAnotacionesMetas.Padding = new Padding(6, 6, 6, 6);
             PanelAnotacionesMetas.ShadowDecoration.CustomizableEdges = customizableEdges37;
-            PanelAnotacionesMetas.Size = new Size(1642, 1057);
+            PanelAnotacionesMetas.Size = new Size(1437, 792);
             PanelAnotacionesMetas.TabIndex = 8;
             // 
             // PanelAnotacionesAgregar
@@ -336,10 +329,11 @@
             PanelAnotacionesAgregar.Controls.Add(lblAnotacionesLibros);
             PanelAnotacionesAgregar.CustomizableEdges = customizableEdges30;
             PanelAnotacionesAgregar.Dock = DockStyle.Fill;
-            PanelAnotacionesAgregar.Location = new Point(607, 8);
+            PanelAnotacionesAgregar.Location = new Point(531, 6);
+            PanelAnotacionesAgregar.Margin = new Padding(3, 2, 3, 2);
             PanelAnotacionesAgregar.Name = "PanelAnotacionesAgregar";
             PanelAnotacionesAgregar.ShadowDecoration.CustomizableEdges = customizableEdges31;
-            PanelAnotacionesAgregar.Size = new Size(1028, 1041);
+            PanelAnotacionesAgregar.Size = new Size(900, 780);
             PanelAnotacionesAgregar.TabIndex = 2;
             // 
             // btnEditarAnotacion
@@ -358,12 +352,11 @@
             btnEditarAnotacion.Image = Properties.Resources.Editar;
             btnEditarAnotacion.ImageOffset = new Point(32, -23);
             btnEditarAnotacion.ImageSize = new Size(55, 55);
-            btnEditarAnotacion.Location = new Point(879, 592);
-            btnEditarAnotacion.Margin = new Padding(3, 4, 3, 4);
+            btnEditarAnotacion.Location = new Point(769, 444);
             btnEditarAnotacion.Name = "btnEditarAnotacion";
             btnEditarAnotacion.PressedColor = Color.Gainsboro;
             btnEditarAnotacion.ShadowDecoration.CustomizableEdges = customizableEdges15;
-            btnEditarAnotacion.Size = new Size(120, 122);
+            btnEditarAnotacion.Size = new Size(105, 92);
             btnEditarAnotacion.TabIndex = 16;
             btnEditarAnotacion.Text = "Editar anotación";
             btnEditarAnotacion.TextOffset = new Point(-15, 23);
@@ -385,11 +378,10 @@
             btnEliminarAnotacion.Image = Properties.Resources.Eliminar;
             btnEliminarAnotacion.ImageOffset = new Point(16, -10);
             btnEliminarAnotacion.ImageSize = new Size(55, 55);
-            btnEliminarAnotacion.Location = new Point(879, 722);
-            btnEliminarAnotacion.Margin = new Padding(3, 4, 3, 4);
+            btnEliminarAnotacion.Location = new Point(769, 542);
             btnEliminarAnotacion.Name = "btnEliminarAnotacion";
             btnEliminarAnotacion.ShadowDecoration.CustomizableEdges = customizableEdges17;
-            btnEliminarAnotacion.Size = new Size(120, 122);
+            btnEliminarAnotacion.Size = new Size(105, 92);
             btnEliminarAnotacion.TabIndex = 2;
             btnEliminarAnotacion.Text = "Eliminar";
             btnEliminarAnotacion.TextOffset = new Point(-15, 23);
@@ -398,11 +390,12 @@
             // txtLeerAnotacion
             // 
             txtLeerAnotacion.Font = new Font("Bahnschrift Condensed", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtLeerAnotacion.Location = new Point(445, 592);
+            txtLeerAnotacion.Location = new Point(389, 444);
+            txtLeerAnotacion.Margin = new Padding(3, 2, 3, 2);
             txtLeerAnotacion.Multiline = true;
             txtLeerAnotacion.Name = "txtLeerAnotacion";
             txtLeerAnotacion.ScrollBars = ScrollBars.Vertical;
-            txtLeerAnotacion.Size = new Size(415, 284);
+            txtLeerAnotacion.Size = new Size(364, 214);
             txtLeerAnotacion.TabIndex = 15;
             // 
             // guna2HtmlLabel7
@@ -410,10 +403,9 @@
             guna2HtmlLabel7.BackColor = Color.Transparent;
             guna2HtmlLabel7.Font = new Font("Bahnschrift SemiCondensed", 20.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             guna2HtmlLabel7.ForeColor = Color.Gainsboro;
-            guna2HtmlLabel7.Location = new Point(12, 542);
-            guna2HtmlLabel7.Margin = new Padding(3, 4, 3, 4);
+            guna2HtmlLabel7.Location = new Point(10, 406);
             guna2HtmlLabel7.Name = "guna2HtmlLabel7";
-            guna2HtmlLabel7.Size = new Size(417, 43);
+            guna2HtmlLabel7.Size = new Size(328, 35);
             guna2HtmlLabel7.TabIndex = 14;
             guna2HtmlLabel7.Text = "Leer anotaciones (según libro):";
             guna2HtmlLabel7.TextAlignment = ContentAlignment.MiddleCenter;
@@ -423,57 +415,31 @@
             guna2HtmlLabel4.BackColor = Color.Transparent;
             guna2HtmlLabel4.Font = new Font("Bahnschrift SemiCondensed", 20.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             guna2HtmlLabel4.ForeColor = Color.Gainsboro;
-            guna2HtmlLabel4.Location = new Point(0, 502);
-            guna2HtmlLabel4.Margin = new Padding(3, 4, 3, 4);
+            guna2HtmlLabel4.Location = new Point(0, 376);
             guna2HtmlLabel4.Name = "guna2HtmlLabel4";
-            guna2HtmlLabel4.Size = new Size(1319, 43);
+            guna2HtmlLabel4.Size = new Size(1037, 35);
             guna2HtmlLabel4.TabIndex = 13;
             guna2HtmlLabel4.Text = "----------------------------------------------------------------------------------------------";
             guna2HtmlLabel4.TextAlignment = ContentAlignment.MiddleCenter;
             // 
-            // btnLeerAnotacion
-            // 
-            btnLeerAnotacion.BorderRadius = 10;
-            btnLeerAnotacion.BorderThickness = 2;
-            btnLeerAnotacion.Cursor = Cursors.Hand;
-            btnLeerAnotacion.CustomizableEdges = customizableEdges18;
-            btnLeerAnotacion.DisabledState.BorderColor = Color.DarkGray;
-            btnLeerAnotacion.DisabledState.CustomBorderColor = Color.DarkGray;
-            btnLeerAnotacion.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            btnLeerAnotacion.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            btnLeerAnotacion.FillColor = Color.FromArgb(150, 51, 3);
-            btnLeerAnotacion.Font = new Font("Bahnschrift Condensed", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnLeerAnotacion.ForeColor = Color.Gainsboro;
-            btnLeerAnotacion.Image = Properties.Resources.inventario;
-            btnLeerAnotacion.ImageOffset = new Point(27, -22);
-            btnLeerAnotacion.ImageSize = new Size(55, 55);
-            btnLeerAnotacion.Location = new Point(319, 659);
-            btnLeerAnotacion.Margin = new Padding(3, 4, 3, 4);
-            btnLeerAnotacion.Name = "btnLeerAnotacion";
-            btnLeerAnotacion.PressedColor = Color.Gainsboro;
-            btnLeerAnotacion.ShadowDecoration.CustomizableEdges = customizableEdges19;
-            btnLeerAnotacion.Size = new Size(110, 125);
-            btnLeerAnotacion.TabIndex = 12;
-            btnLeerAnotacion.Text = "Leer Anotación";
-            btnLeerAnotacion.TextOffset = new Point(-15, 23);
-            btnLeerAnotacion.Click += btnLeerAnotacion_Click;
-            // 
             // lstListaAnotaciones
             // 
             lstListaAnotaciones.FormattingEnabled = true;
-            lstListaAnotaciones.Location = new Point(12, 592);
+            lstListaAnotaciones.Location = new Point(10, 444);
+            lstListaAnotaciones.Margin = new Padding(3, 2, 3, 2);
             lstListaAnotaciones.Name = "lstListaAnotaciones";
-            lstListaAnotaciones.Size = new Size(297, 284);
+            lstListaAnotaciones.Size = new Size(260, 214);
             lstListaAnotaciones.TabIndex = 11;
             // 
             // txtAnotacionLibro
             // 
             txtAnotacionLibro.Font = new Font("Bahnschrift Condensed", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtAnotacionLibro.Location = new Point(18, 59);
+            txtAnotacionLibro.Location = new Point(16, 44);
+            txtAnotacionLibro.Margin = new Padding(3, 2, 3, 2);
             txtAnotacionLibro.Multiline = true;
             txtAnotacionLibro.Name = "txtAnotacionLibro";
             txtAnotacionLibro.ScrollBars = ScrollBars.Vertical;
-            txtAnotacionLibro.Size = new Size(490, 199);
+            txtAnotacionLibro.Size = new Size(429, 150);
             txtAnotacionLibro.TabIndex = 10;
             // 
             // guna2HtmlLabel1
@@ -481,10 +447,9 @@
             guna2HtmlLabel1.BackColor = Color.Transparent;
             guna2HtmlLabel1.Font = new Font("Bahnschrift SemiCondensed", 20.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             guna2HtmlLabel1.ForeColor = Color.Gainsboro;
-            guna2HtmlLabel1.Location = new Point(0, 248);
-            guna2HtmlLabel1.Margin = new Padding(3, 4, 3, 4);
+            guna2HtmlLabel1.Location = new Point(0, 186);
             guna2HtmlLabel1.Name = "guna2HtmlLabel1";
-            guna2HtmlLabel1.Size = new Size(1319, 43);
+            guna2HtmlLabel1.Size = new Size(1037, 35);
             guna2HtmlLabel1.TabIndex = 9;
             guna2HtmlLabel1.Text = "----------------------------------------------------------------------------------------------";
             guna2HtmlLabel1.TextAlignment = ContentAlignment.MiddleCenter;
@@ -505,12 +470,11 @@
             btnAgregarMeta.Image = Properties.Resources.AgregarBlanco;
             btnAgregarMeta.ImageOffset = new Point(28, -10);
             btnAgregarMeta.ImageSize = new Size(55, 55);
-            btnAgregarMeta.Location = new Point(634, 371);
-            btnAgregarMeta.Margin = new Padding(3, 4, 3, 4);
+            btnAgregarMeta.Location = new Point(555, 278);
             btnAgregarMeta.Name = "btnAgregarMeta";
             btnAgregarMeta.PressedColor = Color.Gainsboro;
             btnAgregarMeta.ShadowDecoration.CustomizableEdges = customizableEdges21;
-            btnAgregarMeta.Size = new Size(153, 85);
+            btnAgregarMeta.Size = new Size(134, 64);
             btnAgregarMeta.TabIndex = 3;
             btnAgregarMeta.Text = "Agregar meta";
             btnAgregarMeta.TextOffset = new Point(-15, 23);
@@ -521,12 +485,11 @@
             guna2NumericUpDown3.BackColor = Color.Transparent;
             guna2NumericUpDown3.CustomizableEdges = customizableEdges22;
             guna2NumericUpDown3.Font = new Font("Bahnschrift SemiBold", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            guna2NumericUpDown3.Location = new Point(247, 433);
-            guna2NumericUpDown3.Margin = new Padding(3, 4, 3, 4);
+            guna2NumericUpDown3.Location = new Point(216, 325);
             guna2NumericUpDown3.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             guna2NumericUpDown3.Name = "guna2NumericUpDown3";
             guna2NumericUpDown3.ShadowDecoration.CustomizableEdges = customizableEdges23;
-            guna2NumericUpDown3.Size = new Size(188, 60);
+            guna2NumericUpDown3.Size = new Size(164, 45);
             guna2NumericUpDown3.TabIndex = 8;
             guna2NumericUpDown3.UpDownButtonFillColor = Color.FromArgb(255, 128, 0);
             guna2NumericUpDown3.Value = new decimal(new int[] { 1, 0, 0, 0 });
@@ -536,10 +499,9 @@
             guna2HtmlLabel6.BackColor = Color.Transparent;
             guna2HtmlLabel6.Font = new Font("Bahnschrift SemiCondensed", 20.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             guna2HtmlLabel6.ForeColor = Color.Gainsboro;
-            guna2HtmlLabel6.Location = new Point(18, 433);
-            guna2HtmlLabel6.Margin = new Padding(3, 4, 3, 4);
+            guna2HtmlLabel6.Location = new Point(16, 325);
             guna2HtmlLabel6.Name = "guna2HtmlLabel6";
-            guna2HtmlLabel6.Size = new Size(213, 43);
+            guna2HtmlLabel6.Size = new Size(166, 35);
             guna2HtmlLabel6.TabIndex = 7;
             guna2HtmlLabel6.Text = "Minutos diarios:";
             guna2HtmlLabel6.TextAlignment = ContentAlignment.MiddleCenter;
@@ -549,12 +511,11 @@
             guna2NumericUpDown2.BackColor = Color.Transparent;
             guna2NumericUpDown2.CustomizableEdges = customizableEdges24;
             guna2NumericUpDown2.Font = new Font("Bahnschrift SemiBold", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            guna2NumericUpDown2.Location = new Point(247, 347);
-            guna2NumericUpDown2.Margin = new Padding(3, 4, 3, 4);
+            guna2NumericUpDown2.Location = new Point(216, 260);
             guna2NumericUpDown2.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             guna2NumericUpDown2.Name = "guna2NumericUpDown2";
             guna2NumericUpDown2.ShadowDecoration.CustomizableEdges = customizableEdges25;
-            guna2NumericUpDown2.Size = new Size(188, 60);
+            guna2NumericUpDown2.Size = new Size(164, 45);
             guna2NumericUpDown2.TabIndex = 6;
             guna2NumericUpDown2.UpDownButtonFillColor = Color.FromArgb(255, 128, 0);
             guna2NumericUpDown2.Value = new decimal(new int[] { 1, 0, 0, 0 });
@@ -564,10 +525,9 @@
             guna2HtmlLabel5.BackColor = Color.Transparent;
             guna2HtmlLabel5.Font = new Font("Bahnschrift SemiCondensed", 20.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             guna2HtmlLabel5.ForeColor = Color.Gainsboro;
-            guna2HtmlLabel5.Location = new Point(18, 347);
-            guna2HtmlLabel5.Margin = new Padding(3, 4, 3, 4);
+            guna2HtmlLabel5.Location = new Point(16, 260);
             guna2HtmlLabel5.Name = "guna2HtmlLabel5";
-            guna2HtmlLabel5.Size = new Size(214, 43);
+            guna2HtmlLabel5.Size = new Size(169, 35);
             guna2HtmlLabel5.TabIndex = 5;
             guna2HtmlLabel5.Text = "Páginas diarias:";
             guna2HtmlLabel5.TextAlignment = ContentAlignment.MiddleCenter;
@@ -577,10 +537,9 @@
             lblMetasLibro.BackColor = Color.Transparent;
             lblMetasLibro.Font = new Font("Bahnschrift SemiCondensed", 20.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblMetasLibro.ForeColor = Color.Gainsboro;
-            lblMetasLibro.Location = new Point(12, 280);
-            lblMetasLibro.Margin = new Padding(3, 4, 3, 4);
+            lblMetasLibro.Location = new Point(10, 210);
             lblMetasLibro.Name = "lblMetasLibro";
-            lblMetasLibro.Size = new Size(266, 43);
+            lblMetasLibro.Size = new Size(210, 35);
             lblMetasLibro.TabIndex = 4;
             lblMetasLibro.Text = "Metas (según libro):";
             lblMetasLibro.TextAlignment = ContentAlignment.MiddleCenter;
@@ -590,13 +549,12 @@
             numPaginaAgregarAnotacion.BackColor = Color.Transparent;
             numPaginaAgregarAnotacion.CustomizableEdges = customizableEdges26;
             numPaginaAgregarAnotacion.Font = new Font("Bahnschrift SemiBold", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            numPaginaAgregarAnotacion.Location = new Point(617, 54);
-            numPaginaAgregarAnotacion.Margin = new Padding(3, 4, 3, 4);
+            numPaginaAgregarAnotacion.Location = new Point(540, 40);
             numPaginaAgregarAnotacion.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
             numPaginaAgregarAnotacion.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numPaginaAgregarAnotacion.Name = "numPaginaAgregarAnotacion";
             numPaginaAgregarAnotacion.ShadowDecoration.CustomizableEdges = customizableEdges27;
-            numPaginaAgregarAnotacion.Size = new Size(188, 60);
+            numPaginaAgregarAnotacion.Size = new Size(164, 45);
             numPaginaAgregarAnotacion.TabIndex = 3;
             numPaginaAgregarAnotacion.UpDownButtonFillColor = Color.FromArgb(255, 128, 0);
             numPaginaAgregarAnotacion.Value = new decimal(new int[] { 1, 0, 0, 0 });
@@ -606,10 +564,9 @@
             guna2HtmlLabel3.BackColor = Color.Transparent;
             guna2HtmlLabel3.Font = new Font("Bahnschrift SemiCondensed", 20.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             guna2HtmlLabel3.ForeColor = Color.Gainsboro;
-            guna2HtmlLabel3.Location = new Point(514, 60);
-            guna2HtmlLabel3.Margin = new Padding(3, 4, 3, 4);
+            guna2HtmlLabel3.Location = new Point(450, 45);
             guna2HtmlLabel3.Name = "guna2HtmlLabel3";
-            guna2HtmlLabel3.Size = new Size(101, 43);
+            guna2HtmlLabel3.Size = new Size(80, 35);
             guna2HtmlLabel3.TabIndex = 2;
             guna2HtmlLabel3.Text = "Página:";
             guna2HtmlLabel3.TextAlignment = ContentAlignment.MiddleCenter;
@@ -630,12 +587,11 @@
             btnAgregarAnotacion.Image = Properties.Resources.AgregarBlanco;
             btnAgregarAnotacion.ImageOffset = new Point(35, -10);
             btnAgregarAnotacion.ImageSize = new Size(55, 55);
-            btnAgregarAnotacion.Location = new Point(634, 155);
-            btnAgregarAnotacion.Margin = new Padding(3, 4, 3, 4);
+            btnAgregarAnotacion.Location = new Point(555, 116);
             btnAgregarAnotacion.Name = "btnAgregarAnotacion";
             btnAgregarAnotacion.PressedColor = Color.Gainsboro;
             btnAgregarAnotacion.ShadowDecoration.CustomizableEdges = customizableEdges29;
-            btnAgregarAnotacion.Size = new Size(153, 85);
+            btnAgregarAnotacion.Size = new Size(134, 64);
             btnAgregarAnotacion.TabIndex = 0;
             btnAgregarAnotacion.Text = "Agregar anotación";
             btnAgregarAnotacion.TextOffset = new Point(-15, 23);
@@ -646,10 +602,9 @@
             lblAnotacionesLibros.BackColor = Color.Transparent;
             lblAnotacionesLibros.Font = new Font("Bahnschrift SemiCondensed", 20.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblAnotacionesLibros.ForeColor = Color.Gainsboro;
-            lblAnotacionesLibros.Location = new Point(12, 9);
-            lblAnotacionesLibros.Margin = new Padding(3, 4, 3, 4);
+            lblAnotacionesLibros.Location = new Point(10, 7);
             lblAnotacionesLibros.Name = "lblAnotacionesLibros";
-            lblAnotacionesLibros.Size = new Size(351, 43);
+            lblAnotacionesLibros.Size = new Size(275, 35);
             lblAnotacionesLibros.TabIndex = 1;
             lblAnotacionesLibros.Text = "Anotaciones (según libro):";
             lblAnotacionesLibros.TextAlignment = ContentAlignment.MiddleCenter;
@@ -659,10 +614,11 @@
             PanelDivisionCentro.BackColor = Color.Transparent;
             PanelDivisionCentro.CustomizableEdges = customizableEdges32;
             PanelDivisionCentro.Dock = DockStyle.Left;
-            PanelDivisionCentro.Location = new Point(589, 8);
+            PanelDivisionCentro.Location = new Point(515, 6);
+            PanelDivisionCentro.Margin = new Padding(3, 2, 3, 2);
             PanelDivisionCentro.Name = "PanelDivisionCentro";
             PanelDivisionCentro.ShadowDecoration.CustomizableEdges = customizableEdges33;
-            PanelDivisionCentro.Size = new Size(18, 1041);
+            PanelDivisionCentro.Size = new Size(16, 780);
             PanelDivisionCentro.TabIndex = 1;
             // 
             // panelDgvAnotaciones
@@ -671,10 +627,11 @@
             panelDgvAnotaciones.Controls.Add(dgvAnotaciones);
             panelDgvAnotaciones.CustomizableEdges = customizableEdges34;
             panelDgvAnotaciones.Dock = DockStyle.Left;
-            panelDgvAnotaciones.Location = new Point(7, 8);
+            panelDgvAnotaciones.Location = new Point(6, 6);
+            panelDgvAnotaciones.Margin = new Padding(3, 2, 3, 2);
             panelDgvAnotaciones.Name = "panelDgvAnotaciones";
             panelDgvAnotaciones.ShadowDecoration.CustomizableEdges = customizableEdges35;
-            panelDgvAnotaciones.Size = new Size(582, 1041);
+            panelDgvAnotaciones.Size = new Size(509, 780);
             panelDgvAnotaciones.TabIndex = 0;
             // 
             // dgvAnotaciones
@@ -706,13 +663,11 @@
             dgvAnotaciones.Dock = DockStyle.Fill;
             dgvAnotaciones.GridColor = Color.FromArgb(231, 229, 255);
             dgvAnotaciones.Location = new Point(0, 0);
-            dgvAnotaciones.Margin = new Padding(3, 4, 3, 4);
             dgvAnotaciones.Name = "dgvAnotaciones";
             dgvAnotaciones.ReadOnly = true;
             dgvAnotaciones.RowHeadersVisible = false;
             dgvAnotaciones.RowHeadersWidth = 51;
-            dgvAnotaciones.RowTemplate.Height = 25;
-            dgvAnotaciones.Size = new Size(582, 1041);
+            dgvAnotaciones.Size = new Size(509, 780);
             dgvAnotaciones.TabIndex = 3;
             dgvAnotaciones.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             dgvAnotaciones.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -768,22 +723,48 @@
             // 
             PanelBotonesAccion.CustomizableEdges = customizableEdges38;
             PanelBotonesAccion.Dock = DockStyle.Top;
-            PanelBotonesAccion.Location = new Point(0, 93);
-            PanelBotonesAccion.Margin = new Padding(3, 4, 3, 4);
+            PanelBotonesAccion.Location = new Point(0, 70);
             PanelBotonesAccion.Name = "PanelBotonesAccion";
             PanelBotonesAccion.ShadowDecoration.CustomizableEdges = customizableEdges39;
-            PanelBotonesAccion.Size = new Size(1642, 10);
+            PanelBotonesAccion.Size = new Size(1437, 8);
             PanelBotonesAccion.TabIndex = 6;
+            // 
+            // btnLeerAnotacion
+            // 
+            btnLeerAnotacion.BorderRadius = 10;
+            btnLeerAnotacion.BorderThickness = 2;
+            btnLeerAnotacion.Cursor = Cursors.Hand;
+            btnLeerAnotacion.CustomizableEdges = customizableEdges18;
+            btnLeerAnotacion.DisabledState.BorderColor = Color.DarkGray;
+            btnLeerAnotacion.DisabledState.CustomBorderColor = Color.DarkGray;
+            btnLeerAnotacion.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            btnLeerAnotacion.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            btnLeerAnotacion.FillColor = Color.FromArgb(150, 51, 3);
+            btnLeerAnotacion.Font = new Font("Bahnschrift Condensed", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnLeerAnotacion.ForeColor = Color.Gainsboro;
+            btnLeerAnotacion.Image = Properties.Resources.inventario;
+            btnLeerAnotacion.ImageOffset = new Point(27, -22);
+            btnLeerAnotacion.ImageSize = new Size(55, 55);
+            btnLeerAnotacion.Location = new Point(279, 494);
+            btnLeerAnotacion.Name = "btnLeerAnotacion";
+            btnLeerAnotacion.PressedColor = Color.Gainsboro;
+            btnLeerAnotacion.ShadowDecoration.CustomizableEdges = customizableEdges19;
+            btnLeerAnotacion.Size = new Size(96, 94);
+            btnLeerAnotacion.TabIndex = 12;
+            btnLeerAnotacion.Text = "Leer Anotación";
+            btnLeerAnotacion.TextOffset = new Point(-15, 23);
+            btnLeerAnotacion.Click += btnLeerAnotacion_Click;
             // 
             // AnotacionesUC
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(PanelAnotacionesMetas);
             Controls.Add(PanelBotonesAccion);
             Controls.Add(panelHeader);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "AnotacionesUC";
-            Size = new Size(1642, 1160);
+            Size = new Size(1437, 870);
             PanelArticulos.ResumeLayout(false);
             PanelArticulos.PerformLayout();
             panelTitulo.ResumeLayout(false);
@@ -838,11 +819,11 @@
         private DataGridViewTextBoxColumn AnotacionesLibro;
         private DataGridViewTextBoxColumn ProgresoLibro;
         private TextBox txtAnotacionLibro;
-        private Guna.UI2.WinForms.Guna2Button btnLeerAnotacion;
         private ListBox lstListaAnotaciones;
         private TextBox txtLeerAnotacion;
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel7;
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel4;
         private Guna.UI2.WinForms.Guna2Button btnEditarAnotacion;
+        private Guna.UI2.WinForms.Guna2Button btnLeerAnotacion;
     }
 }
