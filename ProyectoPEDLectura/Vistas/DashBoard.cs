@@ -91,7 +91,7 @@ namespace ProyectoPEDLectura
         // fin metodos para poder ver las vistas (van a ser user controls)
 
         // funcion para poder mostrar los botones seleccionados
-        private Guna2GradientButton _actBtn;
+        private Guna2GradientButton? _actBtn;
         private void BotonSeleccionado(Guna2GradientButton btnColor)
         {
             if (_actBtn != null)
