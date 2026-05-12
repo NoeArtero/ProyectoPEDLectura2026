@@ -1,6 +1,5 @@
-﻿
-
-using ProyectoPEDLectura.Vistas.Inicio;
+﻿using ProyectoPEDLectura.extras;
+using ProyectoPEDLectura.extras.Usuarios;
 using ProyectoPEDLectura.Vistas.Login;
 
 namespace ProyectoPEDLectura.Vistas
@@ -10,7 +9,6 @@ namespace ProyectoPEDLectura.Vistas
         public LoginPrincipal()
         {
             InitializeComponent();
-            
         }
 
         // apartado para métodos
@@ -19,6 +17,7 @@ namespace ProyectoPEDLectura.Vistas
             control.Left = (contenedor.Width - control.Width) / 2;
             control.Top = (contenedor.Height - control.Height) / 2;
         }
+
         private void CentrarBotones()
         {
             int espacioEntreBotones = 15;
@@ -38,20 +37,15 @@ namespace ProyectoPEDLectura.Vistas
             btnNuevoUsuario.Top = y;
         }
 
-        private bool valido()
+        private bool Valido()
         {
-            bool valido = false;
+            if (string.IsNullOrWhiteSpace(txtNombreIngreso.Text))
+                return false;
 
-            if (txtNombreIngreso.Text.IsWhiteSpace() || txtContra.Text.IsWhiteSpace())
-            {
-                valido = false;
-            }
-            else
-            {
-                valido = true;
-            }
+            if (string.IsNullOrWhiteSpace(txtContra.Text))
+                return false;
 
-            return valido;
+            return true;
         }
 
         private void Login_Load(object sender, EventArgs e)
@@ -77,19 +71,52 @@ namespace ProyectoPEDLectura.Vistas
 
         private void btnIngresar_Click(object sender, EventArgs e)
         {
-            if (!valido())
+            if (!Valido())
             {
-                MessageBox.Show("Uno de los espacios está vacío, ingrese sus credenciales completas", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else
-            {
-                DashBoard inicio = new DashBoard();
-                inicio.Show();
-                txtContra.Clear();
-                txtNombreIngreso.Clear();
+                Mensaje.MostrarError( "Ingrese usuario y contraseña.", "Error de inicio de sesión" );
+                return;
             }
 
+            try
+            {
+                string nombreUsuario = txtNombreIngreso.Text.Trim();
+                string contrasena = txtContra.Text.Trim();
+
+                Usuario? usuario = GestorUsuarios.ValidarLogin(nombreUsuario, contrasena);
+
+                if (usuario == null)
+                {
+                    Mensaje.MostrarError(
+                        "Usuario o contraseña incorrectos.",
+                        "Acceso denegado"
+                    );
+                    return;
+                }
+
+                SesionActual.IniciarSesion(usuario);
+
+                DashBoard inicio = new DashBoard();
+
+                inicio.FormClosed += (s, args) =>
+                {
+                    SesionActual.CerrarSesion();
+                    this.Close();
+                };
+
+                inicio.Show();
+
+                txtContra.Clear();
+                txtNombreIngreso.Clear();
+
+                this.Hide();
+            }
+            catch (Exception ex)
+            {
+                Mensaje.MostrarError(
+                    ex.Message,
+                    "Error al iniciar sesión"
+                );
+            }
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
@@ -100,11 +127,10 @@ namespace ProyectoPEDLectura.Vistas
         private void btnNuevoUsuario_Click(object sender, EventArgs e)
         {
             AgregarNuevoUsuarioUC agregarNuevoUsuarioUC = new AgregarNuevoUsuarioUC();
+
             this.Controls.Add(agregarNuevoUsuarioUC);
 
-            // Centrar el UserControl en el formulario
             CentrarControl(agregarNuevoUsuarioUC, this);
-
 
             agregarNuevoUsuarioUC.BringToFront();
         }

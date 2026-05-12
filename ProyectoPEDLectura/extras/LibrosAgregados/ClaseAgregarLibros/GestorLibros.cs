@@ -1,31 +1,52 @@
-﻿using System;
-using System.IO;
+﻿
 using System.Text;
 using ProyectoPEDLectura.extras.EstructurasPersonalizadas;
+using ProyectoPEDLectura.extras.Usuarios;
 
 namespace ProyectoPEDLectura.extras.LibrosAgregados.ClaseAgregarLibros
 {
-
     public static class GestorLibros
     {
-        // Archivo TXT en la raíz de la aplicación
-        private static readonly string rutaArchivo = Path.Combine(
-            AppDomain.CurrentDomain.BaseDirectory,
-            "HistorialLibros.txt"
-        );
-
-        // Lista propia en memoria
         private static ListaLibros libros = new ListaLibros();
 
-        // Se ejecuta una sola vez al usar la clase
+        private static string codigoUsuarioCargado = "";
+
         static GestorLibros()
         {
-            CrearArchivoSiNoExiste();
-            CargarDesdeArchivo();
+            libros = new ListaLibros();
+        }
+
+        private static string ObtenerCodigoUsuarioActivo()
+        {
+            if (!SesionActual.HaySesionActiva || SesionActual.UsuarioActivo == null)
+                throw new Exception("No hay una sesión activa. Inicie sesión antes de cargar libros.");
+
+            return SesionActual.UsuarioActivo.Codigo;
+        }
+
+        private static string ObtenerRutaArchivo()
+        {
+            string codigoUsuario = ObtenerCodigoUsuarioActivo();
+
+            GestorRutasUsuario.CrearEstructuraUsuario(codigoUsuario);
+
+            return GestorRutasUsuario.ObtenerRutaLibrosUsuario(codigoUsuario);
+        }
+
+        private static void AsegurarUsuarioCargado()
+        {
+            string codigoUsuarioActual = ObtenerCodigoUsuarioActivo();
+
+            if (!string.Equals(codigoUsuarioCargado, codigoUsuarioActual, StringComparison.OrdinalIgnoreCase))
+            {
+                CargarDesdeArchivo();
+            }
         }
 
         private static void CrearArchivoSiNoExiste()
         {
+            string rutaArchivo = ObtenerRutaArchivo();
+
             if (!File.Exists(rutaArchivo))
             {
                 File.Create(rutaArchivo).Close();
@@ -48,9 +69,10 @@ namespace ProyectoPEDLectura.extras.LibrosAgregados.ClaseAgregarLibros
             if (string.IsNullOrWhiteSpace(libro.Codigo))
                 throw new Exception("El libro debe tener un código.");
 
-            // Evitar códigos repetidos usando nuestra lista propia
+            AsegurarUsuarioCargado();
+
             if (libros.ExisteCodigo(libro.Codigo))
-                throw new Exception("Ya existe un libro con ese código.");
+                throw new Exception("Ya existe un libro con ese código en esta sesión.");
 
             libros.Agregar(libro);
             GuardarEnArchivo();
@@ -58,26 +80,41 @@ namespace ProyectoPEDLectura.extras.LibrosAgregados.ClaseAgregarLibros
 
         public static ArchivoAdjunto? BuscarPorCodigo(string codigo)
         {
+            AsegurarUsuarioCargado();
             return libros.BuscarPorCodigo(codigo);
         }
 
         public static ListaLibros HistorialLibros
         {
-            get { return libros; }
+            get
+            {
+                AsegurarUsuarioCargado();
+                return libros;
+            }
         }
 
         public static int TotalLibros
         {
-            get { return libros.Cantidad; }
+            get
+            {
+                AsegurarUsuarioCargado();
+                return libros.Cantidad;
+            }
         }
 
         public static void RecorrerLibros(AccionLibro accion)
         {
+            if (accion == null)
+                throw new ArgumentNullException(nameof(accion));
+
+            AsegurarUsuarioCargado();
             libros.Recorrer(accion);
         }
 
         public static bool EliminarLibro(string codigo)
         {
+            AsegurarUsuarioCargado();
+
             bool eliminado = libros.EliminarPorCodigo(codigo);
 
             if (eliminado)
@@ -90,6 +127,8 @@ namespace ProyectoPEDLectura.extras.LibrosAgregados.ClaseAgregarLibros
 
         public static void GuardarEnArchivo()
         {
+            string rutaArchivo = ObtenerRutaArchivo();
+
             StringBuilder contenido = new StringBuilder();
 
             libros.Recorrer(libro =>
@@ -110,6 +149,13 @@ namespace ProyectoPEDLectura.extras.LibrosAgregados.ClaseAgregarLibros
         public static void CargarDesdeArchivo()
         {
             libros.Limpiar();
+
+            string codigoUsuarioActual = ObtenerCodigoUsuarioActivo();
+            codigoUsuarioCargado = codigoUsuarioActual;
+
+            CrearArchivoSiNoExiste();
+
+            string rutaArchivo = ObtenerRutaArchivo();
 
             if (!File.Exists(rutaArchivo))
                 return;
@@ -138,6 +184,12 @@ namespace ProyectoPEDLectura.extras.LibrosAgregados.ClaseAgregarLibros
                     libros.Agregar(libro);
                 }
             }
+        }
+
+        public static void LimpiarMemoria()
+        {
+            libros.Limpiar();
+            codigoUsuarioCargado = "";
         }
     }
 }
