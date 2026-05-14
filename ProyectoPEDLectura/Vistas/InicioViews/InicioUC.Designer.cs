@@ -109,6 +109,11 @@
             panelBody = new Guna.UI2.WinForms.Guna2Panel();
             tableLayoutPanel1 = new TableLayoutPanel();
             dgvResumen = new Guna.UI2.WinForms.Guna2DataGridView();
+            CodigoLibro = new DataGridViewTextBoxColumn();
+            NombreLibro = new DataGridViewTextBoxColumn();
+            AnotacionesLibro = new DataGridViewTextBoxColumn();
+            FechaAgregado = new DataGridViewTextBoxColumn();
+            ProgresoLibro = new DataGridViewTextBoxColumn();
             guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
             guna2Button1 = new Guna.UI2.WinForms.Guna2Button();
             ChartGrid = new TableLayoutPanel();
@@ -127,11 +132,6 @@
             guna2HtmlLabel1 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             CardInventario = new Guna.UI2.WinForms.Guna2GradientPanel();
             guna2HtmlLabel2 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            CodigoLibro = new DataGridViewTextBoxColumn();
-            NombreLibro = new DataGridViewTextBoxColumn();
-            AnotacionesLibro = new DataGridViewTextBoxColumn();
-            FechaAgregado = new DataGridViewTextBoxColumn();
-            ProgresoLibro = new DataGridViewTextBoxColumn();
             panelHeader.SuspendLayout();
             PanelClock.SuspendLayout();
             panelBody.SuspendLayout();
@@ -315,6 +315,41 @@
             dgvResumen.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(231, 229, 255);
             dgvResumen.ThemeStyle.RowsStyle.SelectionForeColor = Color.FromArgb(71, 69, 94);
             // 
+            // CodigoLibro
+            // 
+            CodigoLibro.HeaderText = "Código";
+            CodigoLibro.MinimumWidth = 6;
+            CodigoLibro.Name = "CodigoLibro";
+            CodigoLibro.ReadOnly = true;
+            // 
+            // NombreLibro
+            // 
+            NombreLibro.HeaderText = "Nombre";
+            NombreLibro.MinimumWidth = 6;
+            NombreLibro.Name = "NombreLibro";
+            NombreLibro.ReadOnly = true;
+            // 
+            // AnotacionesLibro
+            // 
+            AnotacionesLibro.HeaderText = "Anotaciones";
+            AnotacionesLibro.MinimumWidth = 6;
+            AnotacionesLibro.Name = "AnotacionesLibro";
+            AnotacionesLibro.ReadOnly = true;
+            // 
+            // FechaAgregado
+            // 
+            FechaAgregado.HeaderText = "Fecha de Agregado";
+            FechaAgregado.MinimumWidth = 6;
+            FechaAgregado.Name = "FechaAgregado";
+            FechaAgregado.ReadOnly = true;
+            // 
+            // ProgresoLibro
+            // 
+            ProgresoLibro.HeaderText = "Progreso";
+            ProgresoLibro.MinimumWidth = 6;
+            ProgresoLibro.Name = "ProgresoLibro";
+            ProgresoLibro.ReadOnly = true;
+            // 
             // guna2Panel1
             // 
             guna2Panel1.Controls.Add(guna2Button1);
@@ -347,6 +382,7 @@
             guna2Button1.Size = new Size(193, 79);
             guna2Button1.TabIndex = 4;
             guna2Button1.Text = "Actualizar";
+            guna2Button1.Click += guna2Button1_Click;
             // 
             // ChartGrid
             // 
@@ -679,41 +715,6 @@
             guna2HtmlLabel2.TabIndex = 1;
             guna2HtmlLabel2.Text = "Tiempo leído";
             guna2HtmlLabel2.TextAlignment = ContentAlignment.MiddleCenter;
-            // 
-            // CodigoLibro
-            // 
-            CodigoLibro.HeaderText = "Código";
-            CodigoLibro.MinimumWidth = 6;
-            CodigoLibro.Name = "CodigoLibro";
-            CodigoLibro.ReadOnly = true;
-            // 
-            // NombreLibro
-            // 
-            NombreLibro.HeaderText = "Nombre";
-            NombreLibro.MinimumWidth = 6;
-            NombreLibro.Name = "NombreLibro";
-            NombreLibro.ReadOnly = true;
-            // 
-            // AnotacionesLibro
-            // 
-            AnotacionesLibro.HeaderText = "Anotaciones";
-            AnotacionesLibro.MinimumWidth = 6;
-            AnotacionesLibro.Name = "AnotacionesLibro";
-            AnotacionesLibro.ReadOnly = true;
-            // 
-            // FechaAgregado
-            // 
-            FechaAgregado.HeaderText = "Fecha de Agregado";
-            FechaAgregado.MinimumWidth = 6;
-            FechaAgregado.Name = "FechaAgregado";
-            FechaAgregado.ReadOnly = true;
-            // 
-            // ProgresoLibro
-            // 
-            ProgresoLibro.HeaderText = "Progreso";
-            ProgresoLibro.MinimumWidth = 6;
-            ProgresoLibro.Name = "ProgresoLibro";
-            ProgresoLibro.ReadOnly = true;
             // 
             // InicioUC
             // 

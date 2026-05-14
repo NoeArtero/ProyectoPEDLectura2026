@@ -1,5 +1,4 @@
-﻿
-using System.Text;
+﻿using System.Text;
 using ProyectoPEDLectura.extras.EstructurasPersonalizadas;
 using ProyectoPEDLectura.extras.Usuarios;
 
@@ -61,6 +60,18 @@ namespace ProyectoPEDLectura.extras.LibrosAgregados.ClaseAgregarLibros
             return texto.Replace("|", "/").Replace(Environment.NewLine, " ");
         }
 
+        // NUEVO: evita guardar progreso inválido
+        private static int NormalizarPaginasLeidas(int paginasLeidas, int numeroPaginas)
+        {
+            if (paginasLeidas < 0)
+                return 0;
+
+            if (numeroPaginas > 0 && paginasLeidas > numeroPaginas)
+                return numeroPaginas;
+
+            return paginasLeidas;
+        }
+
         public static void AgregarLibro(ArchivoAdjunto libro)
         {
             if (libro == null)
@@ -73,6 +84,8 @@ namespace ProyectoPEDLectura.extras.LibrosAgregados.ClaseAgregarLibros
 
             if (libros.ExisteCodigo(libro.Codigo))
                 throw new Exception("Ya existe un libro con ese código en esta sesión.");
+
+            libro.PaginasLeidas = NormalizarPaginasLeidas(libro.PaginasLeidas, libro.NumeroPaginas);
 
             libros.Agregar(libro);
             GuardarEnArchivo();
@@ -111,6 +124,34 @@ namespace ProyectoPEDLectura.extras.LibrosAgregados.ClaseAgregarLibros
             libros.Recorrer(accion);
         }
 
+        // NUEVO: actualiza manualmente el progreso por páginas leídas
+        public static bool ActualizarProgresoLectura(string codigo, int paginasLeidas)
+        {
+            if (string.IsNullOrWhiteSpace(codigo))
+                throw new Exception("No se recibió el código del libro.");
+
+            AsegurarUsuarioCargado();
+
+            ArchivoAdjunto? libro = libros.BuscarPorCodigo(codigo);
+
+            if (libro == null)
+                return false;
+
+            if (paginasLeidas < 0)
+                throw new Exception("Las páginas leídas no pueden ser menores que cero.");
+
+            if (libro.NumeroPaginas <= 0)
+                throw new Exception("El libro no tiene un número de páginas válido.");
+
+            if (paginasLeidas > libro.NumeroPaginas)
+                throw new Exception("Las páginas leídas no pueden ser mayores al total de páginas del libro.");
+
+            libro.PaginasLeidas = paginasLeidas;
+            GuardarEnArchivo();
+
+            return true;
+        }
+
         public static bool EliminarLibro(string codigo)
         {
             AsegurarUsuarioCargado();
@@ -139,7 +180,8 @@ namespace ProyectoPEDLectura.extras.LibrosAgregados.ClaseAgregarLibros
                     $"{LimpiarTexto(libro.RutaArchivo)}|" +
                     $"{LimpiarTexto(libro.Categoria)}|" +
                     $"{libro.NumeroPaginas}|" +
-                    $"{libro.FechaAgregado:yyyy-MM-dd}"
+                    $"{libro.FechaAgregado:yyyy-MM-dd}|" +
+                    $"{NormalizarPaginasLeidas(libro.PaginasLeidas, libro.NumeroPaginas)}"
                 );
             });
 
@@ -178,8 +220,13 @@ namespace ProyectoPEDLectura.extras.LibrosAgregados.ClaseAgregarLibros
                         RutaArchivo = datos[2],
                         Categoria = datos[3],
                         NumeroPaginas = int.TryParse(datos[4], out int paginas) ? paginas : 0,
-                        FechaAgregado = DateTime.TryParse(datos[5], out DateTime fecha) ? fecha : DateTime.Now
+                        FechaAgregado = DateTime.TryParse(datos[5], out DateTime fecha) ? fecha : DateTime.Now,
+
+                        // Si el archivo viejo no tiene páginas leídas, se carga como 0
+                        PaginasLeidas = datos.Length >= 7 && int.TryParse(datos[6], out int paginasLeidas) ? paginasLeidas : 0
                     };
+
+                    libro.PaginasLeidas = NormalizarPaginasLeidas(libro.PaginasLeidas, libro.NumeroPaginas);
 
                     libros.Agregar(libro);
                 }
