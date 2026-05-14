@@ -1,35 +1,90 @@
 ﻿using ProyectoPEDLectura.extras;
 using ProyectoPEDLectura.extras.LibrosAgregados.ClaseAgregarLibros;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
+using System.Windows.Forms;
 
 namespace ProyectoPEDLectura.Vistas.Libros
 {
     public partial class LibrosUC : UserControl
     {
+        //variables constantes para mostrar cada columna del dbv de libro agregado
+        private const string ColumnaFoto = "FotoProducto";
+        private const string ColumnaCodigo = "codigo";
+        private const string ColumnaNombre = "nProducto";
+        private const string ColumnaCategoria = "catProd";
+        private const string ColumnaNumeroPaginas = "NumPaginas";
+        private const string ColumnaPaginasLeidas = "PaginasLeidas";
+        private const string ColumnaFechaAgregado = "FechaAgregado";
+        private const string ColumnaAnotaciones = "NAnotaciones";
+        private const string ColumnaProgreso = "Progreso";
+
+        // Constructor: inicializa componentes, configura eventos y carga los libros y categorías iniciales.
         public LibrosUC()
         {
             InitializeComponent();
+
 
             this.VisibleChanged += LibrosUC_VisibleChanged;
             txtBuscarProd.TextChanged += txtBuscarProd_TextChanged;
             cmbCategoriaProducto.SelectedIndexChanged += cmbCategoriaProducto_SelectedIndexChanged;
 
+            ConfigurarTablaProgreso();
+
+            dgvLibros.CellEndEdit += dgvLibros_CellEndEdit;
+            dgvLibros.CellPainting += dgvLibros_CellPainting;
+            dgvLibros.EditingControlShowing += dgvLibros_EditingControlShowing;
+
             CargarCategoriasFiltro();
 
-            // Cargar desde el TXT al abrir la vista
             GestorLibros.CargarDesdeArchivo();
 
             CargarLibrosEnTabla();
             ContarLibros();
         }
 
+        // Configura las propiedades de la tabla para permitir edición del campo de páginas leídas y mostrar el progreso.
+        private void ConfigurarTablaProgreso()
+        {
+            dgvLibros.ReadOnly = false;
+            dgvLibros.EditMode = DataGridViewEditMode.EditOnKeystrokeOrF2;
+
+            foreach (DataGridViewColumn columna in dgvLibros.Columns)
+            {
+                columna.ReadOnly = true;
+            }
+
+            if (!dgvLibros.Columns.Contains(ColumnaPaginasLeidas))
+            {
+                DataGridViewTextBoxColumn columnaPaginasLeidas = new DataGridViewTextBoxColumn
+                {
+                    Name = ColumnaPaginasLeidas,
+                    HeaderText = "Páginas leídas",
+                    MinimumWidth = 6,
+                    ReadOnly = false,
+                    SortMode = DataGridViewColumnSortMode.NotSortable
+                };
+
+                int posicion = dgvLibros.Columns[ColumnaNumeroPaginas].Index + 1;
+                dgvLibros.Columns.Insert(posicion, columnaPaginasLeidas);
+            }
+
+            dgvLibros.Columns[ColumnaPaginasLeidas].ReadOnly = false;
+            dgvLibros.Columns[ColumnaPaginasLeidas].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dgvLibros.Columns[ColumnaProgreso].ReadOnly = true;
+            dgvLibros.Columns[ColumnaProgreso].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        }
+
+        // Actualiza el contador de libros mostrado en la interfaz.
         private void ContarLibros()
         {
             int totalLibros = dgvLibros.Rows.Count;
             lblTotalLibros.Text = $"N° de libros: {totalLibros}";
         }
 
+        // Carga las opciones de filtro de categorías en el combobox.
         private void CargarCategoriasFiltro()
         {
             cmbCategoriaProducto.Items.Clear();
@@ -43,6 +98,7 @@ namespace ProyectoPEDLectura.Vistas.Libros
             cmbCategoriaProducto.SelectedIndex = 0;
         }
 
+        // Carga los libros desde el gestor en el DataGridView aplicando filtros de búsqueda y categoría.
         private void CargarLibrosEnTabla()
         {
             dgvLibros.Rows.Clear();
@@ -81,27 +137,30 @@ namespace ProyectoPEDLectura.Vistas.Libros
                     return;
 
                 int fila = dgvLibros.Rows.Add();
+                DataGridViewRow row = dgvLibros.Rows[fila];
 
-                dgvLibros.Rows[fila].Cells[0].Value = libro.VistaPrevia;
-                dgvLibros.Rows[fila].Cells[1].Value = libro.Codigo;
-                dgvLibros.Rows[fila].Cells[2].Value = libro.NombreArchivo;
-                dgvLibros.Rows[fila].Cells[3].Value = libro.Categoria;
-                dgvLibros.Rows[fila].Cells[4].Value = libro.NumeroPaginas;
-                dgvLibros.Rows[fila].Cells[5].Value = libro.FechaAgregado.ToShortDateString();
-                dgvLibros.Rows[fila].Cells[6].Value = "";
-                dgvLibros.Rows[fila].Cells[7].Value = "";
+                row.Cells[ColumnaFoto].Value = libro.VistaPrevia;
+                row.Cells[ColumnaCodigo].Value = libro.Codigo;
+                row.Cells[ColumnaNombre].Value = libro.NombreArchivo;
+                row.Cells[ColumnaCategoria].Value = libro.Categoria;
+                row.Cells[ColumnaNumeroPaginas].Value = libro.NumeroPaginas;
+                row.Cells[ColumnaPaginasLeidas].Value = libro.PaginasLeidas;
+                row.Cells[ColumnaFechaAgregado].Value = libro.FechaAgregado.ToShortDateString();
+                row.Cells[ColumnaAnotaciones].Value = "";
+                row.Cells[ColumnaProgreso].Value = libro.ProgresoPorcentaje;
             });
 
             ContarLibros();
         }
 
-
+        // Fuerza la recarga de datos desde el almacenamiento y actualiza la tabla.
         public void ActualizarLibros()
         {
             GestorLibros.CargarDesdeArchivo();
             CargarLibrosEnTabla();
         }
 
+        // Muestra el control para agregar un nuevo libro centrado en el UserControl actual.
         private void btnAgregarLibro_Click(object sender, EventArgs e)
         {
             AgregarLibroUC agregarLibroUCv = new AgregarLibroUC();
@@ -112,6 +171,7 @@ namespace ProyectoPEDLectura.Vistas.Libros
                                                  (this.Height - agregarLibroUCv.Height) / 2);
         }
 
+        // Evento que se dispara al cambiar la visibilidad del control; recarga datos cuando se muestra.
         private void LibrosUC_VisibleChanged(object? sender, EventArgs e)
         {
             if (this.Visible)
@@ -121,16 +181,204 @@ namespace ProyectoPEDLectura.Vistas.Libros
             }
         }
 
+        // Evento para recargar la tabla cuando cambia el texto de búsqueda.
         private void txtBuscarProd_TextChanged(object? sender, EventArgs e)
         {
             CargarLibrosEnTabla();
         }
 
+        // Evento para recargar la tabla al cambiar la categoría seleccionada.
         private void cmbCategoriaProducto_SelectedIndexChanged(object? sender, EventArgs e)
         {
             CargarLibrosEnTabla();
         }
 
+        // Controla la visualización del control de edición para permitir solo números en la columna de páginas leídas.
+        private void dgvLibros_EditingControlShowing(object? sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            if (e.Control is TextBox cajaTexto)
+            {
+                cajaTexto.KeyPress -= SoloNumeros_KeyPress;
+
+                if (dgvLibros.CurrentCell != null &&
+                    dgvLibros.Columns[dgvLibros.CurrentCell.ColumnIndex].Name == ColumnaPaginasLeidas)
+                {
+                    cajaTexto.KeyPress += SoloNumeros_KeyPress;
+                }
+            }
+        }
+
+        // Valida la entrada de teclas para permitir únicamente dígitos y teclas de control.
+        private void SoloNumeros_KeyPress(object? sender, KeyPressEventArgs e)
+        {
+            bool esNumero = char.IsDigit(e.KeyChar);
+            bool esTeclaControl = char.IsControl(e.KeyChar);
+
+            if (!esNumero && !esTeclaControl)
+            {
+                e.Handled = true;
+            }
+        }
+
+        // Maneja la finalización de edición en la columna de páginas leídas, validando y actualizando el progreso.
+        private void dgvLibros_CellEndEdit(object? sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0)
+                return;
+
+            string nombreColumna = dgvLibros.Columns[e.ColumnIndex].Name;
+
+            if (nombreColumna != ColumnaPaginasLeidas)
+                return;
+
+            DataGridViewRow fila = dgvLibros.Rows[e.RowIndex];
+
+            string? codigo = Convert.ToString(fila.Cells[ColumnaCodigo].Value);
+
+            if (string.IsNullOrWhiteSpace(codigo))
+            {
+                Mensaje.MostrarError("No se pudo obtener el código del libro seleccionado.", "Error");
+                CargarLibrosEnTabla();
+                return;
+            }
+
+            ArchivoAdjunto? libroAntesDeEditar = GestorLibros.BuscarPorCodigo(codigo);
+
+            if (libroAntesDeEditar == null)
+            {
+                Mensaje.MostrarError("No se encontró el libro seleccionado.", "Error");
+                CargarLibrosEnTabla();
+                return;
+            }
+
+            string textoPaginasLeidas = Convert.ToString(fila.Cells[ColumnaPaginasLeidas].Value)?.Trim() ?? "";
+
+            if (!int.TryParse(textoPaginasLeidas, out int paginasLeidas))
+            {
+                Mensaje.MostrarError("Debe ingresar un número válido en páginas leídas.", "Error");
+                fila.Cells[ColumnaPaginasLeidas].Value = libroAntesDeEditar.PaginasLeidas;
+                fila.Cells[ColumnaProgreso].Value = libroAntesDeEditar.ProgresoPorcentaje;
+                dgvLibros.InvalidateRow(e.RowIndex);
+                return;
+            }
+
+            try
+            {
+                bool actualizado = GestorLibros.ActualizarProgresoLectura(codigo, paginasLeidas);
+
+                if (!actualizado)
+                {
+                    Mensaje.MostrarError("No se pudo actualizar el progreso del libro.", "Error");
+                    CargarLibrosEnTabla();
+                    return;
+                }
+
+                ArchivoAdjunto? libroActualizado = GestorLibros.BuscarPorCodigo(codigo);
+
+                if (libroActualizado == null)
+                {
+                    CargarLibrosEnTabla();
+                    return;
+                }
+
+                fila.Cells[ColumnaPaginasLeidas].Value = libroActualizado.PaginasLeidas;
+                fila.Cells[ColumnaProgreso].Value = libroActualizado.ProgresoPorcentaje;
+
+                dgvLibros.InvalidateRow(e.RowIndex);
+            }
+            catch (Exception ex)
+            {
+                Mensaje.MostrarError(ex.Message, "Error");
+
+                fila.Cells[ColumnaPaginasLeidas].Value = libroAntesDeEditar.PaginasLeidas;
+                fila.Cells[ColumnaProgreso].Value = libroAntesDeEditar.ProgresoPorcentaje;
+
+                dgvLibros.InvalidateRow(e.RowIndex);
+            }
+        }
+
+        // Dibuja la barra de progreso personalizada en la columna de progreso del DataGridView.
+        private void dgvLibros_CellPainting(object? sender, DataGridViewCellPaintingEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0)
+                return;
+
+            string nombreColumna = dgvLibros.Columns[e.ColumnIndex].Name;
+
+            if (nombreColumna != ColumnaProgreso)
+                return;
+
+            e.Paint(e.CellBounds, e.PaintParts & ~DataGridViewPaintParts.ContentForeground);
+
+            int porcentaje = 0;
+            object? valor = dgvLibros.Rows[e.RowIndex].Cells[ColumnaProgreso].Value;
+
+            if (valor != null)
+            {
+                int.TryParse(valor.ToString(), out porcentaje);
+            }
+
+            if (porcentaje < 0)
+                porcentaje = 0;
+
+            if (porcentaje > 100)
+                porcentaje = 100;
+
+            Rectangle barraFondo = new Rectangle(
+                e.CellBounds.X + 8,
+                e.CellBounds.Y + 9,
+                e.CellBounds.Width - 16,
+                e.CellBounds.Height - 18
+            );
+
+            int anchoProgreso = (barraFondo.Width * porcentaje) / 100;
+
+            Rectangle barraProgreso = new Rectangle(
+                barraFondo.X,
+                barraFondo.Y,
+                anchoProgreso,
+                barraFondo.Height
+            );
+
+            using (SolidBrush fondo = new SolidBrush(Color.FromArgb(235, 235, 235)))
+            using (SolidBrush progreso = new SolidBrush(ObtenerColorProgreso(porcentaje)))
+            using (Pen borde = new Pen(Color.FromArgb(180, 180, 180)))
+            {
+                e.Graphics.FillRectangle(fondo, barraFondo);
+
+                if (anchoProgreso > 0)
+                {
+                    e.Graphics.FillRectangle(progreso, barraProgreso);
+                }
+
+                e.Graphics.DrawRectangle(borde, barraFondo);
+            }
+
+            TextRenderer.DrawText(
+                e.Graphics,
+                $"{porcentaje}%",
+                e.CellStyle.Font,
+                e.CellBounds,
+                Color.FromArgb(55, 55, 55),
+                TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter
+            );
+
+            e.Handled = true;
+        }
+
+        // Devuelve el color que corresponde al nivel de progreso (rojo, naranja o verde).
+        private Color ObtenerColorProgreso(int porcentaje)
+        {
+            if (porcentaje < 35)
+                return Color.FromArgb(210, 85, 60);
+
+            if (porcentaje < 75)
+                return Color.FromArgb(230, 150, 40);
+
+            return Color.FromArgb(70, 160, 90);
+        }
+
+        // Elimina el libro seleccionado después de confirmar con el usuario y actualiza la tabla.
         private void btnEliminarLibro_Click(object sender, EventArgs e)
         {
             if (dgvLibros.CurrentRow == null)
@@ -139,7 +387,7 @@ namespace ProyectoPEDLectura.Vistas.Libros
                 return;
             }
 
-            string? codigo = Convert.ToString(dgvLibros.CurrentRow.Cells[1].Value);
+            string? codigo = Convert.ToString(dgvLibros.CurrentRow.Cells[ColumnaCodigo].Value);
 
             if (string.IsNullOrWhiteSpace(codigo))
             {
@@ -164,14 +412,19 @@ namespace ProyectoPEDLectura.Vistas.Libros
             }
         }
 
-
-        // Permite abrir el libro al hacer doble click en la fila del DataGridView
+        // Abre el archivo asociado al libro en el sistema si existe; gestiona errores si no es posible abrirlo.
         private void dgvLibros_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0)
                 return;
 
-            string? codigo = Convert.ToString(dgvLibros.Rows[e.RowIndex].Cells[1].Value);
+            if (e.ColumnIndex >= 0 &&
+                dgvLibros.Columns[e.ColumnIndex].Name == ColumnaPaginasLeidas)
+            {
+                return;
+            }
+
+            string? codigo = Convert.ToString(dgvLibros.Rows[e.RowIndex].Cells[ColumnaCodigo].Value);
 
             if (string.IsNullOrWhiteSpace(codigo))
             {

@@ -17,7 +17,6 @@ namespace ProyectoPEDLectura
 
         // metodos para poder ver las vistas (van a ser user controls)
 
-        private readonly Dictionary<Type, UserControl> _views = new();
 
         private InicioUC? inicioUC;
         private LibrosUC? librosUC;

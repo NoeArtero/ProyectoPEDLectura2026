@@ -273,6 +273,7 @@ namespace ProyectoPEDLectura.Vistas.Libros
                     Extension = Path.GetExtension(rutaArchivoSeleccionado),
                     Categoria = cmbAgregarProductoCategoria.Text,
                     NumeroPaginas = numeroPaginas,
+                    PaginasLeidas = 0,
                     VistaPrevia = imgAgregarProd.Image,
                     FechaAgregado = DateTime.Now
                 };

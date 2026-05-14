@@ -522,6 +522,7 @@
             dgvResumen.ThemeStyle.RowsStyle.Height = 25;
             dgvResumen.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(231, 229, 255);
             dgvResumen.ThemeStyle.RowsStyle.SelectionForeColor = Color.FromArgb(71, 69, 94);
+            dgvResumen.CellPainting += dgvResumen_CellPainting;
             // 
             // CodigoLibro
             // 

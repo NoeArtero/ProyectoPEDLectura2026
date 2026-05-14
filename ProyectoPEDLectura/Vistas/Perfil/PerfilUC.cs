@@ -28,6 +28,7 @@ namespace ProyectoPEDLectura.Vistas.Perfil
         }
 
         // Conecta los manejadores de eventos a los controles del UserControl.
+
         private void ConectarEventos()
         {
             this.Load += PerfilUC_Load;
@@ -36,7 +37,11 @@ namespace ProyectoPEDLectura.Vistas.Perfil
             btnCambiarUsContra.Click += btnCambiarUsContra_Click;
             btnGuardarCambios.Click += btnGuardarCambios_Click;
             btnActualizar.Click += btnActualizar_Click;
+
+            // NUEVO: pinta la columna de progreso como barra visual
+            dgvResumen.CellPainting += dgvResumen_CellPainting;
         }
+
 
         // Manejador del evento Load: carga datos de usuario, libros y recomendación.
         private async void PerfilUC_Load(object? sender, EventArgs e)
@@ -298,9 +303,11 @@ namespace ProyectoPEDLectura.Vistas.Perfil
                         libro.NombreArchivo,
                         "0",
                         libro.FechaAgregado.ToString("dd/MM/yyyy"),
-                        $"Páginas: {libro.NumeroPaginas}"
+                        libro.ProgresoPorcentaje
                     );
                 }
+
+                dgvResumen.Invalidate();
             }
             catch
             {
@@ -345,6 +352,85 @@ namespace ProyectoPEDLectura.Vistas.Perfil
             {
                 recomendacionCargando = false;
             }
+        }
+
+        //NUEVO: para ver el progreso de lectura de los libros
+
+        private void dgvResumen_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0)
+                return;
+
+            if (dgvResumen.Columns[e.ColumnIndex].Name != "ProgresoLibro")
+                return;
+
+            e.Paint(e.CellBounds, e.PaintParts & ~DataGridViewPaintParts.ContentForeground);
+
+            int porcentaje = 0;
+            object? valor = dgvResumen.Rows[e.RowIndex].Cells["ProgresoLibro"].Value;
+
+            if (valor != null)
+            {
+                int.TryParse(valor.ToString(), out porcentaje);
+            }
+
+            if (porcentaje < 0)
+                porcentaje = 0;
+
+            if (porcentaje > 100)
+                porcentaje = 100;
+
+            Rectangle barraFondo = new Rectangle(
+                e.CellBounds.X + 8,
+                e.CellBounds.Y + 8,
+                e.CellBounds.Width - 16,
+                e.CellBounds.Height - 16
+            );
+
+            int anchoProgreso = (barraFondo.Width * porcentaje) / 100;
+
+            Rectangle barraProgreso = new Rectangle(
+                barraFondo.X,
+                barraFondo.Y,
+                anchoProgreso,
+                barraFondo.Height
+            );
+
+            using (SolidBrush fondo = new SolidBrush(Color.FromArgb(235, 235, 235)))
+            using (SolidBrush progreso = new SolidBrush(ObtenerColorProgreso(porcentaje)))
+            using (Pen borde = new Pen(Color.FromArgb(180, 180, 180)))
+            {
+                e.Graphics.FillRectangle(fondo, barraFondo);
+
+                if (anchoProgreso > 0)
+                {
+                    e.Graphics.FillRectangle(progreso, barraProgreso);
+                }
+
+                e.Graphics.DrawRectangle(borde, barraFondo);
+            }
+
+            TextRenderer.DrawText(
+                e.Graphics,
+                $"{porcentaje}%",
+                e.CellStyle.Font,
+                e.CellBounds,
+                Color.FromArgb(55, 55, 55),
+                TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter
+            );
+
+            e.Handled = true;
+        }
+
+        private Color ObtenerColorProgreso(int porcentaje)
+        {
+            if (porcentaje < 35)
+                return Color.FromArgb(210, 85, 60);
+
+            if (porcentaje < 75)
+                return Color.FromArgb(230, 150, 40);
+
+            return Color.FromArgb(70, 160, 90);
         }
     }
 }
