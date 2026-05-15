@@ -4,6 +4,9 @@ using System;
 using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
+using ProyectoPEDLectura.extras.Usuarios;
+using System.IO;
+using System.Text;
 
 namespace ProyectoPEDLectura.Vistas.Inicio
 {
@@ -157,7 +160,7 @@ namespace ProyectoPEDLectura.Vistas.Inicio
                 dgvResumen.Rows.Add(
                     libro.Codigo,
                     libro.NombreArchivo,
-                    "0",
+                    ContarAnotacionesPorLibro(libro.Codigo ?? "").ToString(),
                     libro.FechaAgregado.ToString("dd/MM/yyyy"),
                     libro.ProgresoPorcentaje
                 );
@@ -166,6 +169,57 @@ namespace ProyectoPEDLectura.Vistas.Inicio
             });
 
             dgvResumen.Invalidate();
+        }
+
+        // Obtiene la ruta del archivo donde se guardan las anotaciones del usuario actual
+        private string ObtenerRutaAnotaciones()
+        {
+            if (!SesionActual.HaySesionActiva || SesionActual.UsuarioActivo == null)
+            {
+                throw new Exception("No hay una sesión activa.");
+            }
+
+            string codigoUsuario = SesionActual.UsuarioActivo.Codigo;
+
+            GestorRutasUsuario.CrearEstructuraUsuario(codigoUsuario);
+
+            return GestorRutasUsuario.ObtenerRutaAnotacionesUsuario(codigoUsuario);
+        }
+
+        // Cuenta cuántas anotaciones tiene un libro usando su código
+        private int ContarAnotacionesPorLibro(string codigoLibro)
+        {
+            if (string.IsNullOrWhiteSpace(codigoLibro))
+                return 0;
+
+            string ruta = ObtenerRutaAnotaciones();
+
+            if (!File.Exists(ruta))
+                return 0;
+
+            int total = 0;
+
+            string[] lineas = File.ReadAllLines(ruta, Encoding.UTF8);
+
+            foreach (string linea in lineas)
+            {
+                if (string.IsNullOrWhiteSpace(linea))
+                    continue;
+
+                string[] datos = linea.Split('|');
+
+                if (datos.Length < 1)
+                    continue;
+
+                string codigoGuardado = datos[0];
+
+                if (string.Equals(codigoGuardado, codigoLibro, StringComparison.OrdinalIgnoreCase))
+                {
+                    total++;
+                }
+            }
+
+            return total;
         }
 
         // Acorta el nombre de un libro para mostrar en los gráficos/resumen

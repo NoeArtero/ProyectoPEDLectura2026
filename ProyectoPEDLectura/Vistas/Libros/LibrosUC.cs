@@ -4,6 +4,9 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using ProyectoPEDLectura.extras.Usuarios;
+using System.Text;
+
 
 namespace ProyectoPEDLectura.Vistas.Libros
 {
@@ -146,11 +149,68 @@ namespace ProyectoPEDLectura.Vistas.Libros
                 row.Cells[ColumnaNumeroPaginas].Value = libro.NumeroPaginas;
                 row.Cells[ColumnaPaginasLeidas].Value = libro.PaginasLeidas;
                 row.Cells[ColumnaFechaAgregado].Value = libro.FechaAgregado.ToShortDateString();
-                row.Cells[ColumnaAnotaciones].Value = "";
+                row.Cells[ColumnaAnotaciones].Value = ContarAnotacionesPorLibro(libro.Codigo ?? "");
                 row.Cells[ColumnaProgreso].Value = libro.ProgresoPorcentaje;
             });
 
             ContarLibros();
+        }
+
+        // Obtiene el código del usuario que inició sesión
+        private string ObtenerCodigoUsuarioActivo()
+        {
+            if (!SesionActual.HaySesionActiva || SesionActual.UsuarioActivo == null)
+            {
+                throw new Exception("No hay una sesión activa.");
+            }
+
+            return SesionActual.UsuarioActivo.Codigo;
+        }
+
+        // Obtiene la ruta donde están guardadas las anotaciones del usuario actual
+        private string ObtenerRutaAnotaciones()
+        {
+            string codigoUsuario = ObtenerCodigoUsuarioActivo();
+
+            GestorRutasUsuario.CrearEstructuraUsuario(codigoUsuario);
+
+            return GestorRutasUsuario.ObtenerRutaAnotacionesUsuario(codigoUsuario);
+        }
+
+        // Cuenta cuántas anotaciones tiene un libro usando su código
+        private int ContarAnotacionesPorLibro(string codigoLibro)
+        {
+            if (string.IsNullOrWhiteSpace(codigoLibro))
+                return 0;
+
+            string ruta = ObtenerRutaAnotaciones();
+
+            if (!File.Exists(ruta))
+                return 0;
+
+            int total = 0;
+
+            string[] lineas = File.ReadAllLines(ruta, Encoding.UTF8);
+
+            foreach (string linea in lineas)
+            {
+                if (string.IsNullOrWhiteSpace(linea))
+                    continue;
+
+                string[] datos = linea.Split('|');
+
+                if (datos.Length < 1)
+                    continue;
+
+                string codigoGuardado = datos[0];
+
+                if (string.Equals(codigoGuardado, codigoLibro, StringComparison.OrdinalIgnoreCase))
+                {
+                    total++;
+                }
+            }
+
+            return total;
         }
 
         // Fuerza la recarga de datos desde el almacenamiento y actualiza la tabla.
@@ -284,6 +344,13 @@ namespace ProyectoPEDLectura.Vistas.Libros
                 fila.Cells[ColumnaPaginasLeidas].Value = libroActualizado.PaginasLeidas;
                 fila.Cells[ColumnaProgreso].Value = libroActualizado.ProgresoPorcentaje;
 
+                // Verifica si el usuario alcanzó o superó la meta diaria
+                VerificarMetaDiariaCumplida(
+                    libroActualizado.Codigo ?? "",
+                    libroAntesDeEditar.PaginasLeidas,
+                    libroActualizado.PaginasLeidas
+                );
+
                 dgvLibros.InvalidateRow(e.RowIndex);
             }
             catch (Exception ex)
@@ -295,6 +362,83 @@ namespace ProyectoPEDLectura.Vistas.Libros
 
                 dgvLibros.InvalidateRow(e.RowIndex);
             }
+        }
+
+        // Verifica si el usuario alcanzó o superó la meta diaria
+        private void VerificarMetaDiariaCumplida(string codigoLibro, int paginasAntes, int paginasAhora)
+        {
+            int metaDiaria = ObtenerMetaDiariaPorLibro(codigoLibro);
+
+            // Si no hay meta registrada para este libro, no se muestra mensaje
+            if (metaDiaria <= 0)
+                return;
+
+            // Si antes ya había cumplido la meta, evitamos mostrar el mensaje repetidamente
+            if (paginasAntes >= metaDiaria)
+                return;
+
+            // Si ahora llegó o superó la meta, mostramos felicitación
+            if (paginasAhora >= metaDiaria)
+            {
+                Mensaje.MostrarMensaje(
+                    $"¡Felicidades! Has cumplido tu meta diaria de {metaDiaria} páginas leídas.",
+                    "Meta diaria cumplida"
+                );
+            }
+        }
+
+        // Busca la meta diaria de páginas asociada al libro dentro del archivo de metas
+        private int ObtenerMetaDiariaPorLibro(string codigoLibro)
+        {
+            if (string.IsNullOrWhiteSpace(codigoLibro))
+                return 0;
+
+            string ruta = ObtenerRutaMetas();
+
+            if (!File.Exists(ruta))
+                return 0;
+
+            string[] lineas = File.ReadAllLines(ruta, Encoding.UTF8);
+
+            foreach (string linea in lineas)
+            {
+                if (string.IsNullOrWhiteSpace(linea))
+                    continue;
+
+                string[] datos = linea.Split('|');
+
+                // Formato esperado:
+                // CodigoLibro | PaginasDiarias | MinutosDiarios
+                if (datos.Length < 2)
+                    continue;
+
+                string codigoGuardado = datos[0];
+
+                if (string.Equals(codigoGuardado, codigoLibro, StringComparison.OrdinalIgnoreCase))
+                {
+                    if (int.TryParse(datos[1], out int paginasMeta))
+                    {
+                        return paginasMeta;
+                    }
+                }
+            }
+
+            return 0;
+        }
+
+        // Obtiene la ruta donde se guardan las metas del usuario actual
+        private string ObtenerRutaMetas()
+        {
+            if (!SesionActual.HaySesionActiva || SesionActual.UsuarioActivo == null)
+            {
+                throw new Exception("No hay una sesión activa.");
+            }
+
+            string codigoUsuario = SesionActual.UsuarioActivo.Codigo;
+
+            GestorRutasUsuario.CrearEstructuraUsuario(codigoUsuario);
+
+            return GestorRutasUsuario.ObtenerRutaMetasUsuario(codigoUsuario);
         }
 
         // Dibuja la barra de progreso personalizada en la columna de progreso del DataGridView.
@@ -401,6 +545,9 @@ namespace ProyectoPEDLectura.Vistas.Libros
 
                 if (eliminado)
                 {
+                    EliminarAnotacionesDelLibro(codigo);
+                    EliminarMetasDelLibro(codigo);
+
                     Mensaje.MostrarMensaje("Libro eliminado exitosamente.", "Éxito");
                     GestorLibros.CargarDesdeArchivo();
                     CargarLibrosEnTabla();
@@ -410,6 +557,70 @@ namespace ProyectoPEDLectura.Vistas.Libros
                     Mensaje.MostrarError("No se encontró el libro.", "Error");
                 }
             }
+        }
+
+        private void EliminarAnotacionesDelLibro(string codigoLibro)
+        {
+            string ruta = ObtenerRutaAnotaciones();
+
+            if (!File.Exists(ruta))
+                return;
+
+            StringBuilder nuevoContenido = new StringBuilder();
+
+            string[] lineas = File.ReadAllLines(ruta, Encoding.UTF8);
+
+            foreach (string linea in lineas)
+            {
+                if (string.IsNullOrWhiteSpace(linea))
+                    continue;
+
+                string[] datos = linea.Split('|');
+
+                if (datos.Length < 1)
+                    continue;
+
+                string codigoGuardado = datos[0];
+
+                if (!string.Equals(codigoGuardado, codigoLibro, StringComparison.OrdinalIgnoreCase))
+                {
+                    nuevoContenido.AppendLine(linea);
+                }
+            }
+
+            File.WriteAllText(ruta, nuevoContenido.ToString(), Encoding.UTF8);
+        }
+
+        private void EliminarMetasDelLibro(string codigoLibro)
+        {
+            string ruta = ObtenerRutaMetas();
+
+            if (!File.Exists(ruta))
+                return;
+
+            StringBuilder nuevoContenido = new StringBuilder();
+
+            string[] lineas = File.ReadAllLines(ruta, Encoding.UTF8);
+
+            foreach (string linea in lineas)
+            {
+                if (string.IsNullOrWhiteSpace(linea))
+                    continue;
+
+                string[] datos = linea.Split('|');
+
+                if (datos.Length < 1)
+                    continue;
+
+                string codigoGuardado = datos[0];
+
+                if (!string.Equals(codigoGuardado, codigoLibro, StringComparison.OrdinalIgnoreCase))
+                {
+                    nuevoContenido.AppendLine(linea);
+                }
+            }
+
+            File.WriteAllText(ruta, nuevoContenido.ToString(), Encoding.UTF8);
         }
 
         // Abre el archivo asociado al libro en el sistema si existe; gestiona errores si no es posible abrirlo.

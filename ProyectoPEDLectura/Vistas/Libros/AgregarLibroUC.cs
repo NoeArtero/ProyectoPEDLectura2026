@@ -23,8 +23,13 @@ namespace ProyectoPEDLectura.Vistas.Libros
         {
             InitializeComponent();
 
+            // El código se genera automáticamente, por eso no se permite escribirlo manualmente
             txtCodigo.Enabled = true;
-            txtCodigo.ReadOnly = false;
+            txtCodigo.ReadOnly = true;
+
+            // Se asigna el siguiente código disponible
+            txtCodigo.Text = GestorLibros.GenerarCodigoLibro();
+
             txtPaginas.Enabled = false;
             txtPaginas.Clear();
 

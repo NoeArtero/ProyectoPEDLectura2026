@@ -3,6 +3,7 @@ using ProyectoPEDLectura.extras;
 using ProyectoPEDLectura.extras.LibrosAgregados.ClaseAgregarLibros;
 using ProyectoPEDLectura.extras.Recomendaciones;
 using ProyectoPEDLectura.extras.Usuarios;
+using System.Text;
 
 namespace ProyectoPEDLectura.Vistas.Perfil
 {
@@ -301,7 +302,7 @@ namespace ProyectoPEDLectura.Vistas.Perfil
                     dgvResumen.Rows.Add(
                         libro.Codigo,
                         libro.NombreArchivo,
-                        "0",
+                        ContarAnotacionesPorLibro(libro.Codigo ?? "").ToString(),
                         libro.FechaAgregado.ToString("dd/MM/yyyy"),
                         libro.ProgresoPorcentaje
                     );
@@ -313,6 +314,57 @@ namespace ProyectoPEDLectura.Vistas.Perfil
             {
                 dgvResumen.Rows.Clear();
             }
+        }
+
+        // Obtiene la ruta del archivo donde se guardan las anotaciones del usuario actual
+        private string ObtenerRutaAnotaciones()
+        {
+            if (!SesionActual.HaySesionActiva || SesionActual.UsuarioActivo == null)
+            {
+                throw new Exception("No hay una sesión activa.");
+            }
+
+            string codigoUsuario = SesionActual.UsuarioActivo.Codigo;
+
+            GestorRutasUsuario.CrearEstructuraUsuario(codigoUsuario);
+
+            return GestorRutasUsuario.ObtenerRutaAnotacionesUsuario(codigoUsuario);
+        }
+
+        // Cuenta cuántas anotaciones tiene un libro según su código
+        private int ContarAnotacionesPorLibro(string codigoLibro)
+        {
+            if (string.IsNullOrWhiteSpace(codigoLibro))
+                return 0;
+
+            string ruta = ObtenerRutaAnotaciones();
+
+            if (!File.Exists(ruta))
+                return 0;
+
+            int total = 0;
+
+            string[] lineas = File.ReadAllLines(ruta, Encoding.UTF8);
+
+            foreach (string linea in lineas)
+            {
+                if (string.IsNullOrWhiteSpace(linea))
+                    continue;
+
+                string[] datos = linea.Split('|');
+
+                if (datos.Length < 1)
+                    continue;
+
+                string codigoGuardado = datos[0];
+
+                if (string.Equals(codigoGuardado, codigoLibro, StringComparison.OrdinalIgnoreCase))
+                {
+                    total++;
+                }
+            }
+
+            return total;
         }
 
         // Método público para disparar la actualización de la recomendación desde otros componentes.

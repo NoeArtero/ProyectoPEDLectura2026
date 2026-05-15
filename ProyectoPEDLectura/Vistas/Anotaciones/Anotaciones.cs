@@ -293,6 +293,7 @@ namespace ProyectoPEDLectura.Vistas.Anotaciones
 
         private void AnotacionesUC_Load(object? sender, EventArgs e)
         {
+            BloquearEdicionAnotacion();
             CargarDatosDesdeArchivos();
             ActualizarPantallaCompleta();
         }
@@ -564,6 +565,26 @@ namespace ProyectoPEDLectura.Vistas.Anotaciones
             return limpio.Substring(0, 45) + "...";
         }
 
+        // Obtiene la página más alta registrada en las anotaciones de un libro.
+        // Se usa para evitar repetir páginas o retroceder en el progreso.
+        private int ObtenerUltimaPaginaAnotada(string codigoLibro)
+        {
+            int ultimaPagina = 0;
+
+            anotaciones.Recorrer(anotacion =>
+            {
+                if (string.Equals(anotacion.CodigoLibro, codigoLibro, StringComparison.OrdinalIgnoreCase))
+                {
+                    if (anotacion.Pagina > ultimaPagina)
+                    {
+                        ultimaPagina = anotacion.Pagina;
+                    }
+                }
+            });
+
+            return ultimaPagina;
+        }
+
         private Anotacion? ObtenerAnotacionSeleccionada()
         {
             if (string.IsNullOrWhiteSpace(codigoLibroSeleccionado))
@@ -584,6 +605,8 @@ namespace ProyectoPEDLectura.Vistas.Anotaciones
 
             txtLeerAnotacion.Text = anotacion.Texto;
             numPaginaAgregarAnotacion.Value = anotacion.Pagina;
+
+            BloquearEdicionAnotacion();
         }
 
         private void btnAgregarMeta_Click(object sender, EventArgs e)
@@ -630,6 +653,20 @@ namespace ProyectoPEDLectura.Vistas.Anotaciones
             }
 
             int pagina = (int)numPaginaAgregarAnotacion.Value;
+            int ultimaPaginaAntes = ObtenerUltimaPaginaAnotada(codigoLibroSeleccionado);
+
+            // Obtiene la última página registrada para este libro
+            int ultimaPaginaRegistrada = ObtenerUltimaPaginaAnotada(codigoLibroSeleccionado);
+
+            // No permite repetir páginas ni retroceder
+            if (pagina <= ultimaPaginaRegistrada)
+            {
+                Mensaje.MostrarError(
+                    $"La página debe ser mayor que la última registrada ({ultimaPaginaRegistrada}).",
+                    "Página inválida"
+                );
+                return;
+            }
 
             ArchivoAdjunto? libro = GestorLibros.BuscarPorCodigo(codigoLibroSeleccionado);
 
@@ -650,11 +687,60 @@ namespace ProyectoPEDLectura.Vistas.Anotaciones
             anotaciones.Agregar(nueva);
             GuardarAnotacionesEnArchivo();
 
+            // Actualiza el progreso del libro usando la página donde se agregó la anotación.
+            // Ejemplo: si el libro tiene 100 páginas y la anotación se agregó en la página 10,
+            // el progreso será 10%.
+            try
+            {
+                ArchivoAdjunto? libroAntes = GestorLibros.BuscarPorCodigo(codigoLibroSeleccionado);
+                int paginasAntes = libroAntes?.PaginasLeidas ?? 0;
+
+                GestorLibros.ActualizarProgresoLectura(codigoLibroSeleccionado, pagina);
+
+                VerificarMetaDiariaCumplida(
+                    codigoLibroSeleccionado,
+                    ultimaPaginaAntes,
+                    pagina
+                );
+            }
+            catch (Exception ex)
+            {
+                Mensaje.MostrarError(ex.Message, "Error al actualizar progreso");
+                return;
+            }
+
             txtAnotacionLibro.Clear();
 
             ActualizarPantallaCompleta();
 
             Mensaje.MostrarMensaje("Anotación agregada correctamente.", "Éxito");
+        }
+
+        // Verifica si el usuario alcanzó o superó la meta diaria del libro
+        private void VerificarMetaDiariaCumplida(string codigoLibro, int ultimaPaginaAntes, int pagina)
+        {
+
+            MetaLectura? meta = metas.BuscarPorLibro(codigoLibro);
+
+            // Si el libro no tiene meta registrada, no se muestra mensaje
+            if (meta == null)
+                return;
+            // Si la meta de páginas no es válida, no se muestra mensaje
+
+            if (meta.PaginasDiarias <= 0)
+                return;
+            // Calcula cuántas páginas avanzó desde la última anotación
+
+            int paginasAvanzadas = pagina - ultimaPaginaAntes;
+
+            // Si ahora alcanzó o superó la meta, muestra felicitación
+            if (paginasAvanzadas >= meta.PaginasDiarias)
+            {
+                Mensaje.MostrarMensaje(
+                    $"¡Felicidades! Has leído {paginasAvanzadas} páginas y cumpliste tu meta diaria de {meta.PaginasDiarias} páginas.",
+                    "Meta diaria cumplida"
+                );
+            }
         }
 
         private void btnLeerAnotacion_Click(object sender, EventArgs e)
@@ -671,29 +757,77 @@ namespace ProyectoPEDLectura.Vistas.Anotaciones
             numPaginaAgregarAnotacion.Value = anotacion.Pagina;
         }
 
+        // Bloquea los controles de edición de anotaciones
+        private void BloquearEdicionAnotacion()
+        {
+            // Bloquea la edición del texto donde se lee/edita la anotación
+            txtLeerAnotacion.ReadOnly = true;
+            txtLeerAnotacion.Enabled = true;
+
+            // Bloquea edición de página
+            numPaginaAgregarAnotacion.Enabled = false;
+
+            modoEdicionAnotacion = false;
+            anotacionEnEdicion = null;
+            btnEditarAnotacion.Text = "Editar anotación";
+        }
+
         private void btnEditarAnotacion_Click(object sender, EventArgs e)
         {
+            // Verifica que haya un libro seleccionado
+            if (string.IsNullOrWhiteSpace(codigoLibroSeleccionado))
+            {
+                Mensaje.MostrarError("Seleccione primero un libro.", "Error");
+                return;
+            }
+
+            // PRIMER CLIC:
+            // Entra en modo edición y carga la anotación seleccionada
             if (!modoEdicionAnotacion)
             {
+                // Obtiene la anotación seleccionada de la lista
                 Anotacion? seleccionada = ObtenerAnotacionSeleccionada();
 
+                // Valida que sí exista una anotación seleccionada
                 if (seleccionada == null)
                 {
                     Mensaje.MostrarError("Seleccione una anotación para editarla.", "Error");
                     return;
                 }
 
+                // Guarda la anotación actual para editarla después
                 anotacionEnEdicion = seleccionada;
+
+                // Muestra el contenido en los controles
                 txtLeerAnotacion.Text = seleccionada.Texto;
+                txtAnotacionLibro.Text = seleccionada.Texto;
                 numPaginaAgregarAnotacion.Value = seleccionada.Pagina;
 
-                modoEdicionAnotacion = true;
-                btnEditarAnotacion.Text = "Guardar cambios";
+                // Habilita edición en txtLeerAnotacion
+                txtLeerAnotacion.ReadOnly = false;
+                txtLeerAnotacion.Enabled = true;
+                // Habilita edición de página
+                numPaginaAgregarAnotacion.Enabled = true;
 
-                Mensaje.MostrarMensaje("Ahora puede modificar la anotación y presionar nuevamente el botón para guardar.", "Modo edición");
+                // Activa el modo edición
+                modoEdicionAnotacion = true;
+
+                // Cambia el texto del botón
+                btnEditarAnotacion.Text = "Guardar cambios";
+                txtLeerAnotacion.Focus();
+
+                Mensaje.MostrarMensaje(
+                    "Ahora puede modificar el texto o la página de la anotación y presionar nuevamente el botón para guardar.",
+                    "Modo edición"
+                );
+
                 return;
             }
 
+            // SEGUNDO CLIC:
+            // Guarda los cambios realizados
+
+            // Verifica que exista una anotación cargada para editar
             if (anotacionEnEdicion == null)
             {
                 modoEdicionAnotacion = false;
@@ -701,32 +835,67 @@ namespace ProyectoPEDLectura.Vistas.Anotaciones
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(txtLeerAnotacion.Text))
+            // Obtiene el nuevo texto escrito por el usuario
+            string nuevoTexto = txtLeerAnotacion.Text.Trim();
+
+            // Valida que la anotación no quede vacía
+            if (string.IsNullOrWhiteSpace(nuevoTexto))
             {
                 Mensaje.MostrarError("La anotación no puede quedar vacía.", "Error");
                 return;
             }
 
+            // Obtiene la nueva página escrita por el usuario
             int nuevaPagina = (int)numPaginaAgregarAnotacion.Value;
 
+            // Busca el libro asociado a la anotación
             ArchivoAdjunto? libro = GestorLibros.BuscarPorCodigo(codigoLibroSeleccionado);
 
-            if (libro != null && libro.NumeroPaginas > 0 && nuevaPagina > libro.NumeroPaginas)
+            // Verifica que el libro exista
+            if (libro == null)
+            {
+                Mensaje.MostrarError("No se encontró el libro asociado a la anotación.", "Error");
+                return;
+            }
+
+            // Verifica que la página no supere el total del libro
+            if (libro.NumeroPaginas > 0 && nuevaPagina > libro.NumeroPaginas)
             {
                 Mensaje.MostrarError("La página de la anotación no puede ser mayor al total de páginas del libro.", "Error");
                 return;
             }
 
+            // Actualiza los datos de la anotación
             anotacionEnEdicion.Pagina = nuevaPagina;
-            anotacionEnEdicion.Texto = txtLeerAnotacion.Text.Trim();
+            anotacionEnEdicion.Texto = nuevoTexto;
             anotacionEnEdicion.Fecha = DateTime.Now;
 
+            // Guarda las anotaciones en el archivo
             GuardarAnotacionesEnArchivo();
 
+            // Actualiza el progreso de lectura del libro
+            try
+            {
+                GestorLibros.ActualizarProgresoLectura(codigoLibroSeleccionado, nuevaPagina);
+            }
+            catch (Exception ex)
+            {
+                Mensaje.MostrarError(ex.Message, "Error al actualizar progreso");
+                return;
+            }
+
+            // Sale del modo edición
             modoEdicionAnotacion = false;
             anotacionEnEdicion = null;
+
+            // Restaura el texto original del botón
             btnEditarAnotacion.Text = "Editar anotación";
 
+            // Limpia los controles
+            txtAnotacionLibro.Clear();
+            txtLeerAnotacion.Clear();
+
+            // Actualiza toda la interfaz
             ActualizarPantallaCompleta();
 
             Mensaje.MostrarMensaje("Anotación editada correctamente.", "Éxito");

@@ -115,6 +115,25 @@ namespace ProyectoPEDLectura.extras.LibrosAgregados.ClaseAgregarLibros
             }
         }
 
+        // Genera automáticamente un código único para cada libro.
+        // Ejemplo: LIB001, LIB002, LIB003...
+        public static string GenerarCodigoLibro()
+        {
+            AsegurarUsuarioCargado();
+
+            int numero = 1;
+            string codigoGenerado;
+
+            do
+            {
+                codigoGenerado = $"LIB{numero.ToString("D3")}";
+                numero++;
+            }
+            while (libros.ExisteCodigo(codigoGenerado));
+
+            return codigoGenerado;
+        }
+
         public static void RecorrerLibros(AccionLibro accion)
         {
             if (accion == null)
