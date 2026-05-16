@@ -48,6 +48,12 @@ namespace ProyectoPEDLectura.extras.Usuarios
             return Path.Combine(ObtenerCarpetaUsuario(codigoUsuario), "metas.txt");
         }
 
+        //Nuevo para las metas
+        public static string ObtenerRutaLecturaDiariaUsuario(string codigoUsuario)
+        {
+            return Path.Combine(ObtenerCarpetaUsuario(codigoUsuario), "lectura_diaria.txt");
+        }
+
         public static void CrearEstructuraBase()
         {
             Directory.CreateDirectory(CarpetaDatos);
@@ -67,7 +73,9 @@ namespace ProyectoPEDLectura.extras.Usuarios
 
             CrearArchivoSiNoExiste(ObtenerRutaLibrosUsuario(codigoUsuario));
             CrearArchivoSiNoExiste(ObtenerRutaAnotacionesUsuario(codigoUsuario));
+            //el de rutaMetas es nuevo, es para el nuevo sistema de metas
             CrearArchivoSiNoExiste(ObtenerRutaMetasUsuario(codigoUsuario));
+            CrearArchivoSiNoExiste(ObtenerRutaLecturaDiariaUsuario(codigoUsuario));
         }
 
         private static void CrearArchivoSiNoExiste(string rutaArchivo)

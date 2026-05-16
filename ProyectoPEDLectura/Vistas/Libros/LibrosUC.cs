@@ -1,11 +1,9 @@
 ﻿using ProyectoPEDLectura.extras;
 using ProyectoPEDLectura.extras.LibrosAgregados.ClaseAgregarLibros;
 using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using System.Windows.Forms;
 using ProyectoPEDLectura.extras.Usuarios;
 using System.Text;
+using ProyectoPEDLectura.extras.LecturaDiaria;
 
 
 namespace ProyectoPEDLectura.Vistas.Libros
@@ -310,6 +308,7 @@ namespace ProyectoPEDLectura.Vistas.Libros
                 CargarLibrosEnTabla();
                 return;
             }
+            int paginasAntes = libroAntesDeEditar.PaginasLeidas;
 
             string textoPaginasLeidas = Convert.ToString(fila.Cells[ColumnaPaginasLeidas].Value)?.Trim() ?? "";
 
@@ -344,10 +343,10 @@ namespace ProyectoPEDLectura.Vistas.Libros
                 fila.Cells[ColumnaPaginasLeidas].Value = libroActualizado.PaginasLeidas;
                 fila.Cells[ColumnaProgreso].Value = libroActualizado.ProgresoPorcentaje;
 
-                // Verifica si el usuario alcanzó o superó la meta diaria
+                // Registra el avance diario real y verifica si cumplió la meta de hoy
                 VerificarMetaDiariaCumplida(
                     libroActualizado.Codigo ?? "",
-                    libroAntesDeEditar.PaginasLeidas,
+                    paginasAntes,
                     libroActualizado.PaginasLeidas
                 );
 
@@ -369,21 +368,16 @@ namespace ProyectoPEDLectura.Vistas.Libros
         {
             int metaDiaria = ObtenerMetaDiariaPorLibro(codigoLibro);
 
-            // Si no hay meta registrada para este libro, no se muestra mensaje
-            if (metaDiaria <= 0)
-                return;
+            ResultadoMetaDiaria resultado = GestorLecturaDiaria.RegistrarAvanceYVerificarMeta(
+                codigoLibro,
+                paginasAntes,
+                paginasAhora,
+                metaDiaria
+            );
 
-            // Si antes ya había cumplido la meta, evitamos mostrar el mensaje repetidamente
-            if (paginasAntes >= metaDiaria)
-                return;
-
-            // Si ahora llegó o superó la meta, mostramos felicitación
-            if (paginasAhora >= metaDiaria)
+            if (resultado.DebeMostrarFelicitacion)
             {
-                Mensaje.MostrarMensaje(
-                    $"¡Felicidades! Has cumplido tu meta diaria de {metaDiaria} páginas leídas.",
-                    "Meta diaria cumplida"
-                );
+                Mensaje.MostrarMensaje(resultado.Mensaje, "Meta diaria cumplida");
             }
         }
 

@@ -1,9 +1,8 @@
 ﻿using ProyectoPEDLectura.extras;
 using ProyectoPEDLectura.extras.LibrosAgregados.ClaseAgregarLibros;
 using ProyectoPEDLectura.extras.Usuarios;
-using System.Drawing;
 using System.Text;
-using System.Windows.Forms;
+using ProyectoPEDLectura.extras.LecturaDiaria;
 
 namespace ProyectoPEDLectura.Vistas.Anotaciones
 {
@@ -271,6 +270,7 @@ namespace ProyectoPEDLectura.Vistas.Anotaciones
         {
             InitializeComponent();
 
+
             ConectarEventos();
             CargarCategoriasFiltro();
             CargarDatosDesdeArchivos();
@@ -489,7 +489,7 @@ namespace ProyectoPEDLectura.Vistas.Anotaciones
             {
                 modoEdicionAnotacion = false;
                 anotacionEnEdicion = null;
-                btnEditarAnotacion.Text = "Editar anotación";
+                btnEditarAnotacion.Text = "Editar";
             }
 
             codigoLibroSeleccionado = codigo;
@@ -653,7 +653,6 @@ namespace ProyectoPEDLectura.Vistas.Anotaciones
             }
 
             int pagina = (int)numPaginaAgregarAnotacion.Value;
-            int ultimaPaginaAntes = ObtenerUltimaPaginaAnotada(codigoLibroSeleccionado);
 
             // Obtiene la última página registrada para este libro
             int ultimaPaginaRegistrada = ObtenerUltimaPaginaAnotada(codigoLibroSeleccionado);
@@ -698,10 +697,10 @@ namespace ProyectoPEDLectura.Vistas.Anotaciones
                 GestorLibros.ActualizarProgresoLectura(codigoLibroSeleccionado, pagina);
 
                 VerificarMetaDiariaCumplida(
-                    codigoLibroSeleccionado,
-                    ultimaPaginaAntes,
+                 codigoLibroSeleccionado,
+                  paginasAntes,
                     pagina
-                );
+                    );
             }
             catch (Exception ex)
             {
@@ -717,32 +716,24 @@ namespace ProyectoPEDLectura.Vistas.Anotaciones
         }
 
         // Verifica si el usuario alcanzó o superó la meta diaria del libro
-        private void VerificarMetaDiariaCumplida(string codigoLibro, int ultimaPaginaAntes, int pagina)
+        private void VerificarMetaDiariaCumplida(string codigoLibro, int paginasAntes, int paginasAhora)
         {
-
             MetaLectura? meta = metas.BuscarPorLibro(codigoLibro);
 
-            // Si el libro no tiene meta registrada, no se muestra mensaje
-            if (meta == null)
-                return;
-            // Si la meta de páginas no es válida, no se muestra mensaje
+            int metaDiaria = meta?.PaginasDiarias ?? 0;
 
-            if (meta.PaginasDiarias <= 0)
-                return;
-            // Calcula cuántas páginas avanzó desde la última anotación
+            ResultadoMetaDiaria resultado = GestorLecturaDiaria.RegistrarAvanceYVerificarMeta(
+                codigoLibro,
+                paginasAntes,
+                paginasAhora,
+                metaDiaria
+            );
 
-            int paginasAvanzadas = pagina - ultimaPaginaAntes;
-
-            // Si ahora alcanzó o superó la meta, muestra felicitación
-            if (paginasAvanzadas >= meta.PaginasDiarias)
+            if (resultado.DebeMostrarFelicitacion)
             {
-                Mensaje.MostrarMensaje(
-                    $"¡Felicidades! Has leído {paginasAvanzadas} páginas y cumpliste tu meta diaria de {meta.PaginasDiarias} páginas.",
-                    "Meta diaria cumplida"
-                );
+                Mensaje.MostrarMensaje(resultado.Mensaje, "Meta diaria cumplida");
             }
         }
-
         private void btnLeerAnotacion_Click(object sender, EventArgs e)
         {
             Anotacion? anotacion = ObtenerAnotacionSeleccionada();
@@ -760,16 +751,15 @@ namespace ProyectoPEDLectura.Vistas.Anotaciones
         // Bloquea los controles de edición de anotaciones
         private void BloquearEdicionAnotacion()
         {
-            // Bloquea la edición del texto donde se lee/edita la anotación
             txtLeerAnotacion.ReadOnly = true;
             txtLeerAnotacion.Enabled = true;
 
-            // Bloquea edición de página
-            numPaginaAgregarAnotacion.Enabled = false;
+            // Debe quedar habilitado porque también se usa para agregar anotaciones nuevas.
+            numPaginaAgregarAnotacion.Enabled = true;
 
             modoEdicionAnotacion = false;
             anotacionEnEdicion = null;
-            btnEditarAnotacion.Text = "Editar anotación";
+            btnEditarAnotacion.Text = "Editar";
         }
 
         private void btnEditarAnotacion_Click(object sender, EventArgs e)
@@ -813,7 +803,7 @@ namespace ProyectoPEDLectura.Vistas.Anotaciones
                 modoEdicionAnotacion = true;
 
                 // Cambia el texto del botón
-                btnEditarAnotacion.Text = "Guardar cambios";
+                btnEditarAnotacion.Text = "Guardar";
                 txtLeerAnotacion.Focus();
 
                 Mensaje.MostrarMensaje(
@@ -831,7 +821,7 @@ namespace ProyectoPEDLectura.Vistas.Anotaciones
             if (anotacionEnEdicion == null)
             {
                 modoEdicionAnotacion = false;
-                btnEditarAnotacion.Text = "Editar anotación";
+                btnEditarAnotacion.Text = "Editar";
                 return;
             }
 
@@ -865,6 +855,9 @@ namespace ProyectoPEDLectura.Vistas.Anotaciones
                 return;
             }
 
+            //nuevo: para el avance del los libros
+            int paginasAntes = libro.PaginasLeidas;
+
             // Actualiza los datos de la anotación
             anotacionEnEdicion.Pagina = nuevaPagina;
             anotacionEnEdicion.Texto = nuevoTexto;
@@ -877,6 +870,12 @@ namespace ProyectoPEDLectura.Vistas.Anotaciones
             try
             {
                 GestorLibros.ActualizarProgresoLectura(codigoLibroSeleccionado, nuevaPagina);
+
+                VerificarMetaDiariaCumplida(
+                    codigoLibroSeleccionado,
+                    paginasAntes,
+                    nuevaPagina
+                );
             }
             catch (Exception ex)
             {
@@ -889,7 +888,7 @@ namespace ProyectoPEDLectura.Vistas.Anotaciones
             anotacionEnEdicion = null;
 
             // Restaura el texto original del botón
-            btnEditarAnotacion.Text = "Editar anotación";
+            btnEditarAnotacion.Text = "Editar";
 
             // Limpia los controles
             txtAnotacionLibro.Clear();
@@ -932,7 +931,7 @@ namespace ProyectoPEDLectura.Vistas.Anotaciones
             txtLeerAnotacion.Clear();
             modoEdicionAnotacion = false;
             anotacionEnEdicion = null;
-            btnEditarAnotacion.Text = "Editar anotación";
+            btnEditarAnotacion.Text = "Editar";
 
             ActualizarPantallaCompleta();
 
